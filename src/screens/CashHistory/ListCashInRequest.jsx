@@ -1,11 +1,10 @@
-import { CustomText } from '@components/uiComponents';
+import { CenterLoader, CustomText } from '@components/uiComponents';
 import { Theme } from '@constants/index';
 import { CommonHelpers, ToastHelpers } from '@helpers/index';
 import CashServices from '@services/CashServices';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, RefreshControl, View } from 'react-native';
 
 const {
     SIZES,
@@ -17,10 +16,13 @@ const {
 
 export default function ListCashInRequest({ navigation }) {
     const [listCashInRequest, setListCashInRequest] = useState();
+    const [isShowSpinner, setIsShowSpinner] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
 
     useEffect(
         () => {
             const onFocus = navigation.addListener('focus', () => {
+                setIsShowSpinner(true);
                 getListCashInRequest();
             });
 
@@ -34,6 +36,8 @@ export default function ListCashInRequest({ navigation }) {
 
         if (data) {
             setListCashInRequest(data.data);
+            setIsShowSpinner(false);
+            setRefreshing(false);
         }
     };
 
@@ -132,6 +136,10 @@ export default function ListCashInRequest({ navigation }) {
         </View>
     );
 
+    const onRefresh = () => {
+        getListCashInRequest();
+    };
+
     const renderListCashInRequest = () => (
         <FlatList
             contentContainerStyle={{
@@ -140,26 +148,40 @@ export default function ListCashInRequest({ navigation }) {
             data={listCashInRequest}
             renderItem={({ item, index }) => renderCashInRequestItem(item, index)}
             keyExtractor={(item) => item.id}
-            // refreshControl={(
-            //     <RefreshControl
-            //         refreshing={refreshing}
-            //         onRefresh={() => onRefresh()}
-            //         tintColor={COLORS.ACTIVE}
-            //     />
-            // )}
+            refreshControl={(
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={() => onRefresh()}
+                    tintColor={COLORS.ACTIVE}
+                />
+            )}
+            ListEmptyComponent={(
+                <CustomText
+                    style={{
+                        textAlign: 'center'
+                    }}
+                    text="Không có dữ liệu"
+                />
+            )}
         />
     );
 
     try {
         return (
-            <View
-                style={{
-                    width: SIZES.WIDTH_BASE,
-                    backgroundColor: COLORS.BASE,
-                }}
-            >
-                {renderListCashInRequest()}
-            </View>
+            <>
+                {isShowSpinner ? (
+                    <CenterLoader />
+                ) : (
+                    <View
+                        style={{
+                            width: SIZES.WIDTH_BASE,
+                            backgroundColor: COLORS.BASE,
+                        }}
+                    >
+                        {renderListCashInRequest()}
+                    </View>
+                )}
+            </>
         );
     } catch (exception) {
         console.log('exception :>> ', exception);
