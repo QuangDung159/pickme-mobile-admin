@@ -9,9 +9,7 @@ import {
     SET_NAVIGATION,
     SET_NOTIFICATION_RECEIVED_REDUX,
     SET_NUMBER_MESSAGE_UNREAD,
-    SET_NUMBER_NOTIFICATION_UNREAD,
-    SET_PERSON_TAB_ACTIVE_INDEX,
-    SET_SHOW_LOADER_STORE, SET_TOKEN,
+    SET_NUMBER_NOTIFICATION_UNREAD, SET_SHOW_LOADER_STORE, SET_TOKEN,
     SET_VERIFICATION_STORE
 } from './ActionTypes';
 
@@ -115,13 +113,6 @@ export const setNavigation = (navigationObj) => ({
     type: SET_NAVIGATION,
     payload: {
         navigationObj
-    }
-});
-
-export const setPersonTabActiveIndex = (personTabActiveIndex) => ({
-    type: SET_PERSON_TAB_ACTIVE_INDEX,
-    payload: {
-        personTabActiveIndex
     }
 });
 

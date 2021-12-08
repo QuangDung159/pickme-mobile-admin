@@ -11,7 +11,7 @@ import { SOCKET_URL } from '@env';
 import Stacks from '@navigations/Stacks';
 import { NavigationContainer } from '@react-navigation/native';
 import {
-    setDeviceTimezone, setMessageListened, setNotificationReceivedRedux, setPersonTabActiveIndex
+    setDeviceTimezone, setMessageListened, setNotificationReceivedRedux
 } from '@redux/Actions';
 import * as SecureStore from 'expo-secure-store';
 import React, { useEffect } from 'react';
@@ -107,26 +107,25 @@ export default function Main() {
     const handleNotificationByType = (notificationType) => {
         switch (notificationType) {
             case 2: {
-                dispatch(setPersonTabActiveIndex(2));
+                navigationObj.navigate(ScreenName.VALIDATION_REQUEST);
                 break;
             }
             case 3: {
-                dispatch(setPersonTabActiveIndex(1));
+                navigationObj.navigate(ScreenName.CASH_REQUEST);
                 break;
             }
             case 4: {
-                dispatch(setPersonTabActiveIndex(1));
+                navigationObj.navigate(ScreenName.CASH_REQUEST);
                 break;
             }
             case 5: {
-                dispatch(setPersonTabActiveIndex(2));
+                navigationObj.navigate(ScreenName.VALIDATION_REQUEST);
                 break;
             }
             default: {
                 break;
             }
         }
-        navigationObj.navigate(ScreenName.PERSONAL);
         dispatch(setNotificationReceivedRedux(null));
     };
 

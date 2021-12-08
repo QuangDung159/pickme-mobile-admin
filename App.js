@@ -174,26 +174,6 @@ export default function App() {
                 {/* <DeepLinkHandler /> */}
                 <Main />
                 <Toast config={toastConfig} ref={(ref) => Toast.setRef(ref)} />
-                {/* {ENV !== 'prod' && (
-                    <View
-                        style={{
-                            position: 'absolute',
-                            right: 5,
-                            bottom: Platform.OS === 'android' ? 5 : 32,
-                            zIndex: 99
-                        }}
-                    >
-                        <Text
-                            style={{
-                                fontFamily: TEXT_REGULAR,
-                                color: COLORS.ACTIVE,
-                                fontSize: SIZES.FONT_H5,
-                            }}
-                        >
-                            {ENV}
-                        </Text>
-                    </View>
-                )} */}
             </Provider>
         </MenuProvider>
     );

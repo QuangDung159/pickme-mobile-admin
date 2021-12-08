@@ -1,6 +1,5 @@
 /* eslint import/no-unresolved: [2, { ignore: ['@env'] }] */
 import { Images, ScreenName, Theme } from '@constants/index';
-import { setPersonTabActiveIndex } from '@redux/Actions';
 import { NotificationServices } from '@services/index';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -10,7 +9,6 @@ import {
     Text,
     TouchableOpacity, View
 } from 'react-native';
-import { useDispatch } from 'react-redux';
 
 const {
     FONT: { TEXT_REGULAR, TEXT_BOLD },
@@ -23,8 +21,6 @@ export default function NotificationItem({
     notiItem,
     navigation,
 }) {
-    const dispatch = useDispatch();
-
     const onClickRead = async (isReadAll, notiId = null) => {
         let result;
         if (isReadAll) {
@@ -44,14 +40,13 @@ export default function NotificationItem({
     const handleNavigation = (navigationId, navigationType) => {
         switch (navigationType) {
             case 2: {
-                navigation.navigate(ScreenName.BOOKING_DETAIL, {
+                navigation.navigate(ScreenName.VALIDATION_REQUEST, {
                     bookingId: navigationId,
                 });
                 break;
             }
             case 3: {
-                navigation.navigate(ScreenName.PERSONAL);
-                dispatch(setPersonTabActiveIndex(1));
+                navigation.navigate(ScreenName.CASH_REQUEST);
                 break;
             }
             default: {
