@@ -221,12 +221,12 @@ const styles = StyleSheet.create({
         position: 'relative'
     },
     title: {
-        width: '100%',
+        width: 300,
         fontSize: SIZES.FONT_H2,
         fontFamily: TEXT_BOLD,
-        marginLeft: -70,
+        marginLeft: -30,
         color: COLORS.DEFAULT,
-        marginTop: iPhoneX ? 5 : 20
+        marginTop: iPhoneX ? 5 : 25
     },
     navbar: {
         paddingTop: iPhoneX ? SIZES.HEIGHT_BASE * 0.05 : null,

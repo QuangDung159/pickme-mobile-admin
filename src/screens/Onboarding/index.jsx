@@ -8,9 +8,9 @@ import {
 } from '@constants/index';
 import { ENV } from '@env';
 import {
-    setCurrentUser, setIsSignInOtherDeviceStore, setListPartnerHomeRedux, setNavigation
+    setCurrentUser, setIsSignInOtherDeviceStore, setNavigation
 } from '@redux/Actions';
-import { BookingServices, UserServices } from '@services/index';
+import { UserServices } from '@services/index';
 import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
 import React, { useEffect, useState } from 'react';
@@ -40,7 +40,6 @@ export default function Onboarding({ navigation }) {
 
     useEffect(
         () => {
-            getListPartner();
             dispatch(setNavigation(navigation));
             onLogin();
 
@@ -60,15 +59,6 @@ export default function Onboarding({ navigation }) {
             }
         }, [isSignInOtherDeviceStore]
     );
-
-    const getListPartner = async () => {
-        const result = await BookingServices.fetchListPartnerAsync();
-        const { data } = result;
-
-        if (data) {
-            dispatch(setListPartnerHomeRedux(data.data));
-        }
-    };
 
     const onLogin = async () => {
         const phoneNumber = await SecureStore.getItemAsync('username');
@@ -260,7 +250,6 @@ export default function Onboarding({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        // marginTop: Platform.OS === 'android' ? -Utils.HeaderHeight : 0,
         backgroundColor: COLORS.BASE,
         flex: 1,
     },
