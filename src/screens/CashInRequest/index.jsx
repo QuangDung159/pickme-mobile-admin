@@ -37,7 +37,9 @@ export default function CashInRequest({ navigation }) {
 
         if (data) {
             ToastHelpers.renderToast(data.message, 'success');
-            navigation.navigate(ScreenName.CASH_HISTORY);
+            navigation.navigate(ScreenName.CASH_HISTORY, {
+                tabActive: 0
+            });
         }
 
         setIsShowSpinner(false);

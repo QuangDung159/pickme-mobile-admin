@@ -5,7 +5,7 @@ import { SceneMap } from 'react-native-tab-view';
 import ListCashInRequest from './ListCashInRequest';
 import ListCashOutRequest from './ListCashOutRequest';
 
-export default function CashHistory({ navigation, tabActive }) {
+export default function CashHistory({ navigation, route }) {
     const [routes] = useState([
         { key: 'cashInRequest', title: 'Nạp tiền' },
         { key: 'cashOutRequest', title: 'Rút tiền' },
@@ -29,7 +29,7 @@ export default function CashHistory({ navigation, tabActive }) {
             <TopTabBar
                 routes={routes}
                 renderScene={renderScene}
-                tabActiveIndex={tabActive || 0}
+                tabActiveIndex={route?.params?.tabActive || 0}
             />
         );
     } catch (exception) {
