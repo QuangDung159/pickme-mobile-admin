@@ -59,7 +59,8 @@ export default {
         CREATE_CASH_OUT_REQUEST: '/CashOuts/CreateCashOutRequest',
         GET_CASH_IN_REQUEST: '/CashIns/CashInRequests?pageIndex=1&pageSize=50',
         GET_CASH_OUT_REQUEST: '/CashOuts/CashOutRequests?pageIndex=1&pageSize=50',
-        CREATE_CASH_IN_REQUEST: '/CashIns/CreateCashInRequest'
+        CREATE_CASH_IN_REQUEST: '/CashIns/CreateCashInRequest',
+        SUBMIT_COMPLETE_CASH_OUT_REQUEST: '/CashOuts/CompletedCashOut'
     },
     NOTIFICATION: {
         GET_MY_NOTIFICATION: '/Notifications/Notifications',

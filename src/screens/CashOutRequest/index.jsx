@@ -2,7 +2,7 @@ import {
     CenterLoader, CustomButton, CustomModal, CustomText
 } from '@components/uiComponents';
 import { Theme } from '@constants/index';
-import { CommonHelpers, ToastHelpers } from '@helpers/index';
+import { CommonHelpers, MediaHelpers, ToastHelpers } from '@helpers/index';
 import CashServices from '@services/CashServices';
 import React, { useEffect, useState } from 'react';
 import {
@@ -37,7 +37,9 @@ export default function CashOutRequest({ navigation }) {
 
     useEffect(
         () => {
-            setDetailModalVisible(true);
+            if (selectedCashOut) {
+                setDetailModalVisible(true);
+            }
         }, [selectedCashOut]
     );
 
@@ -69,14 +71,14 @@ export default function CashOutRequest({ navigation }) {
                                     fontSize: SIZES.FONT_H4,
                                     fontFamily: TEXT_BOLD
                                 }}
-                                text={'Vui lòng kiểm tra kĩ thông tin\nnạp tiền trước khi xác nhận'}
+                                text={'Chụp ảnh màn hình sau khi\nthực hiện chuyển tiền'}
                             />
 
                             <CustomText
                                 style={{
                                     fontSize: SIZES.FONT_H4
                                 }}
-                                text="Số tiền nạp: "
+                                text="Số tiền rút: "
                             />
                             <CustomText
                                 style={{
@@ -86,14 +88,14 @@ export default function CashOutRequest({ navigation }) {
                                     color: COLORS.ACTIVE,
                                     fontFamily: TEXT_BOLD
                                 }}
-                                text={selectedCashOut.amount}
+                                text={CommonHelpers.formatCurrency(selectedCashOut.amount)}
                             />
 
                             <CustomText
                                 style={{
                                     fontSize: SIZES.FONT_H4
                                 }}
-                                text="Tên đăng nhập: "
+                                text="Chủ tài khoản: "
                             />
                             <CustomText
                                 style={{
@@ -103,14 +105,14 @@ export default function CashOutRequest({ navigation }) {
                                     color: COLORS.ACTIVE,
                                     fontFamily: TEXT_BOLD
                                 }}
-                                text="username"
+                                text={selectedCashOut.ownerName}
                             />
 
                             <CustomText
                                 style={{
                                     fontSize: SIZES.FONT_H4
                                 }}
-                                text="Mô tả: "
+                                text="Tên ngân hàng: "
                             />
                             <CustomText
                                 style={{
@@ -120,14 +122,15 @@ export default function CashOutRequest({ navigation }) {
                                     color: COLORS.ACTIVE,
                                     fontFamily: TEXT_BOLD
                                 }}
-                                text="description"
+                                text={selectedCashOut.bankName}
                             />
 
                             <View
                                 style={{
                                     flexDirection: 'row',
                                     justifyContent: 'space-between',
-                                    width: SIZES.WIDTH_BASE * 0.8
+                                    width: SIZES.WIDTH_BASE * 0.8,
+                                    marginBottom: 10
                                 }}
                             >
                                 <CustomButton
@@ -145,16 +148,59 @@ export default function CashOutRequest({ navigation }) {
                                         setSelectedCashOut(null);
                                     }}
                                     buttonStyle={{ width: SIZES.WIDTH_BASE * 0.39 }}
-                                    type="active"
-                                    label="Đã hoàn thành"
+                                    type="default"
+                                    label="Đóng"
                                 />
                             </View>
+                            <CustomButton
+                                onPress={() => {
+                                    setDetailModalVisible(false);
+                                    setSelectedCashOut(null);
+                                    onClickUploadPaidScreenshot();
+                                }}
+                                buttonStyle={{ width: SIZES.WIDTH_BASE * 0.8 }}
+                                type="active"
+                                label="Đánh dấu đã hoàn thành"
+                            />
                         </View>
                     )}
                 />
             )}
         </>
     );
+
+    const submitCompleteCashOut = async (imgUrl) => {
+        const res = await CashServices.submitCompleteCashOutRequestAsync({
+            PaidImageUrl: imgUrl,
+            Description: 'Hoàn thành',
+            cashOutRequestId: selectedCashOut.id
+        });
+
+        const { data } = res;
+        if (data) {
+            getListWaitingCashOutRequest();
+            ToastHelpers.renderToast(data.message, 'success');
+        }
+    };
+
+    const onClickUploadPaidScreenshot = () => {
+        MediaHelpers.pickImage(false, [1, 1], (result) => handleUploadPainScreenshot(result.uri));
+    };
+
+    const handleUploadPainScreenshot = (uri) => {
+        setIsShowSpinner(true);
+
+        MediaHelpers.imgbbUploadImage(
+            uri,
+            (res) => {
+                submitCompleteCashOut(res?.data?.url || 'no-image');
+            },
+            () => {
+                ToastHelpers.renderToast();
+                submitCompleteCashOut('no-image');
+            }
+        );
+    };
 
     const renderCashOutRequestItem = (item, index) => (
         <TouchableOpacity
