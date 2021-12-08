@@ -13,7 +13,7 @@ import * as SecureStore from 'expo-secure-store';
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const {
     SIZES, FONT: {
@@ -23,6 +23,8 @@ const {
 } = Theme;
 
 export default function Menu({ navigation }) {
+    const currentUser = useSelector((state) => state.userReducer.currentUser);
+
     const dispatch = useDispatch();
 
     const listMenu = [
@@ -151,6 +153,14 @@ export default function Menu({ navigation }) {
                     style={{
                         paddingTop: 10
                     }}
+                />
+                <CustomText
+                    style={{
+                        fontSize: SIZES.FONT_H3,
+                        textAlign: 'center',
+                        marginBottom: 10
+                    }}
+                    text={currentUser.userName}
                 />
                 <CustomText
                     style={{

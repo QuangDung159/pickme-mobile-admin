@@ -1,29 +1,36 @@
-import { CustomText } from '@components/uiComponents';
-import { Theme } from '@constants/index';
+import { TopTabBar } from '@components/uiComponents';
 import { ToastHelpers } from '@helpers/index';
-import React from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
+import React, { useState } from 'react';
+import { SceneMap } from 'react-native-tab-view';
+import ListCashInRequest from './ListCashInRequest';
+import ListCashOutRequest from './ListCashOutRequest';
 
-const {
-    SIZES,
-    COLORS
-} = Theme;
+export default function CashHistory({ navigation, tabActive }) {
+    const [routes] = useState([
+        { key: 'cashInRequest', title: 'Nạp tiền' },
+        { key: 'cashOutRequest', title: 'Rút tiền' },
+    ]);
 
-export default function CashHistory() {
+    const CashInRequestRoute = () => (
+        <ListCashInRequest navigation={navigation} />
+    );
+
+    const CashOutRequestRoute = () => (
+        <ListCashOutRequest navigation={navigation} />
+    );
+
+    const renderScene = SceneMap({
+        cashInRequest: CashInRequestRoute,
+        cashOutRequest: CashOutRequestRoute,
+    });
+
     try {
         return (
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                    width: SIZES.WIDTH_BASE * 0.9,
-                    alignItems: 'center',
-                    backgroundColor: COLORS.BASE,
-                    marginTop: 5,
-                    alignSelf: 'center'
-                }}
-            >
-                <CustomText text="CashHistory" />
-            </ScrollView>
+            <TopTabBar
+                routes={routes}
+                renderScene={renderScene}
+                tabActiveIndex={tabActive || 0}
+            />
         );
     } catch (exception) {
         console.log('exception :>> ', exception);
