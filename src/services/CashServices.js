@@ -52,8 +52,8 @@ const rxFetchCashOutRequestAsync = async (domain = null) => {
     return result;
 };
 
-const fetchCashOutRequestAsync = async (body) => {
-    let result = await rxFetchCashOutRequestAsync(body);
+const fetchCashOutRequestAsync = async () => {
+    let result = await rxFetchCashOutRequestAsync();
     const handledResult = await Middlewares.handleResponseStatusMiddleware(result);
     if (handledResult) {
         result = await rxFetchCashOutRequestAsync(handledResult.backupDomain);
@@ -71,11 +71,30 @@ const rxFetchCashInRequestAsync = async (domain = null) => {
     return result;
 };
 
-const fetchCashInRequestAsync = async (body) => {
-    let result = await rxFetchCashInRequestAsync(body);
+const fetchCashInRequestAsync = async () => {
+    let result = await rxFetchCashInRequestAsync();
     const handledResult = await Middlewares.handleResponseStatusMiddleware(result);
     if (handledResult) {
         result = await rxFetchCashInRequestAsync(handledResult.backupDomain);
+    }
+    return CommonHelpers.handleResByStatus(result);
+};
+
+const rxSubmitCashInRequestAsync = async (body, domain = null) => {
+    const result = await RxUtil(
+        `${Rx.CASH.CREATE_CASH_IN_REQUEST}/90b64129-ce01-4ed5-87a1-e43ae1d102ef`,
+        'POST',
+        body,
+        domain
+    );
+    return result;
+};
+
+const submitCashInRequestAsync = async (body) => {
+    let result = await rxSubmitCashInRequestAsync(body);
+    const handledResult = await Middlewares.handleResponseStatusMiddleware(result);
+    if (handledResult) {
+        result = await rxSubmitCashInRequestAsync(body, handledResult.backupDomain);
     }
     return CommonHelpers.handleResByStatus(result);
 };
@@ -84,5 +103,6 @@ export default {
     fetchCashHistoryAsync,
     submitCashOutRequestAsync,
     fetchCashOutRequestAsync,
-    fetchCashInRequestAsync
+    fetchCashInRequestAsync,
+    submitCashInRequestAsync
 };

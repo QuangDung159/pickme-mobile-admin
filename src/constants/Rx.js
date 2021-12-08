@@ -58,7 +58,8 @@ export default {
         GET_CASH_HISTORY: '/users/UserHistories',
         CREATE_CASH_OUT_REQUEST: '/CashOuts/CreateCashOutRequest',
         GET_CASH_IN_REQUEST: '/CashIns/CashInRequests?pageIndex=1&pageSize=50',
-        GET_CASH_OUT_REQUEST: '/CashOuts/CashOutRequests?pageIndex=1&pageSize=50'
+        GET_CASH_OUT_REQUEST: '/CashOuts/CashOutRequests?pageIndex=1&pageSize=50',
+        CREATE_CASH_IN_REQUEST: '/CashIns/CreateCashInRequest'
     },
     NOTIFICATION: {
         GET_MY_NOTIFICATION: '/Notifications/Notifications',
