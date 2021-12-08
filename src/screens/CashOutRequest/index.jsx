@@ -6,7 +6,7 @@ import { CommonHelpers, ToastHelpers } from '@helpers/index';
 import CashServices from '@services/CashServices';
 import React, { useEffect, useState } from 'react';
 import {
-    FlatList, RefreshControl, TouchableOpacity, View
+    RefreshControl, ScrollView, TouchableOpacity, View
 } from 'react-native';
 
 const {
@@ -58,7 +58,7 @@ export default function CashOutRequest({ navigation }) {
         }
     };
 
-    const renderCashOutRequestItem = (item, index) => (
+    const renderCashOutRequestItem = (item) => (
         <TouchableOpacity
             onPress={
                 () => setSelectedCashOut(item)
@@ -72,7 +72,6 @@ export default function CashOutRequest({ navigation }) {
                     borderRadius: 20,
                     borderWidth: 1,
                     marginBottom: 10,
-                    marginTop: index === 0 ? 10 : 0
                 }}
             >
                 <View
@@ -147,29 +146,30 @@ export default function CashOutRequest({ navigation }) {
     };
 
     const renderListCashOutRequest = () => (
-        <FlatList
-            contentContainerStyle={{
-                width: SIZES.WIDTH_BASE,
+        <View
+            style={{
+                marginTop: 10
             }}
-            data={listCashOutRequest}
-            renderItem={({ item, index }) => renderCashOutRequestItem(item, index)}
-            keyExtractor={(item) => item.id}
-            refreshControl={(
-                <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={() => onRefresh()}
-                    tintColor={COLORS.ACTIVE}
-                />
-            )}
-            ListEmptyComponent={(
+        >
+            {listCashOutRequest ? (
+                <>
+                    {listCashOutRequest.map((item) => (
+                        <View
+                            key={item.id}
+                        >
+                            {renderCashOutRequestItem(item)}
+                        </View>
+                    ))}
+                </>
+            ) : (
                 <CustomText
                     style={{
-                        textAlign: 'center'
+                        textAlign: 'center',
                     }}
                     text="Không có dữ liệu"
                 />
             )}
-        />
+        </View>
     );
 
     try {
@@ -178,14 +178,24 @@ export default function CashOutRequest({ navigation }) {
                 {isShowSpinner ? (
                     <CenterLoader />
                 ) : (
-                    <View
-                        style={{
+                    <ScrollView
+                        contentContainerStyle={{
                             width: SIZES.WIDTH_BASE,
-                            backgroundColor: COLORS.BASE,
+                            minHeight: SIZES.HEIGHT_BASE
                         }}
+                        // data={listCashOutRequest}
+                        // renderItem={({ item, index }) => renderCashOutRequestItem(item, index)}
+                        // keyExtractor={(item) => item.id}
+                        refreshControl={(
+                            <RefreshControl
+                                refreshing={refreshing}
+                                onRefresh={() => onRefresh()}
+                                tintColor={COLORS.ACTIVE}
+                            />
+                        )}
                     >
                         {renderListCashOutRequest()}
-                    </View>
+                    </ScrollView>
                 )}
             </>
         );
