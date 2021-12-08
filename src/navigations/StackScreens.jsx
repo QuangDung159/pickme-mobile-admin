@@ -2,10 +2,9 @@
 import { ScreenName, ScreenTitle, Theme } from '@constants/index';
 import Header from '@containers/Header';
 import { createStackNavigator } from '@react-navigation/stack';
-import CashRequest from '@screens/CashRequest';
 // screens
 import {
-    Menu, Notification,
+    CashHistory, CashInRequest, CashOutRequest, Menu, Notification,
     Onboarding
 } from '@screens/index';
 import ValidationRequest from '@screens/ValidationRequest';
@@ -74,14 +73,50 @@ export const OnboardingScreen = () => (
     />
 );
 
-export const CashRequestScreen = () => (
+export const CashInRequestScreen = () => (
     <Stack.Screen
-        name={ScreenName.CASH_REQUEST}
-        component={CashRequest}
+        name={ScreenName.CASH_IN_REQUEST}
+        component={CashInRequest}
         options={{
             header: ({ navigation, scene }) => (
                 <Header
-                    title={ScreenTitle.CASH_REQUEST}
+                    title={ScreenTitle.CASH_IN_REQUEST}
+                    options
+                    navigation={navigation}
+                    scene={scene}
+                />
+            ),
+            cardStyle: { backgroundColor: COLORS.BASE }
+        }}
+    />
+);
+
+export const CashOutRequestScreen = () => (
+    <Stack.Screen
+        name={ScreenName.CASH_OUT_REQUEST}
+        component={CashOutRequest}
+        options={{
+            header: ({ navigation, scene }) => (
+                <Header
+                    title={ScreenTitle.CASH_OUT_REQUEST}
+                    options
+                    navigation={navigation}
+                    scene={scene}
+                />
+            ),
+            cardStyle: { backgroundColor: COLORS.BASE }
+        }}
+    />
+);
+
+export const CashHistoryScreen = () => (
+    <Stack.Screen
+        name={ScreenName.CASH_HISTORY}
+        component={CashHistory}
+        options={{
+            header: ({ navigation, scene }) => (
+                <Header
+                    title={ScreenTitle.CASH_HISTORY}
                     options
                     navigation={navigation}
                     scene={scene}

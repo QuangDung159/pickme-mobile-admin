@@ -111,11 +111,11 @@ export default function Main() {
                 break;
             }
             case 3: {
-                navigationObj.navigate(ScreenName.CASH_REQUEST);
+                navigationObj.navigate(ScreenName.CASH_OUT_REQUEST);
                 break;
             }
             case 4: {
-                navigationObj.navigate(ScreenName.CASH_REQUEST);
+                navigationObj.navigate(ScreenName.CASH_OUT_REQUEST);
                 break;
             }
             case 5: {

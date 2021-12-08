@@ -42,7 +42,47 @@ const submitCashOutRequestAsync = async (body) => {
     return CommonHelpers.handleResByStatus(result);
 };
 
+const rxFetchCashOutRequestAsync = async (domain = null) => {
+    const result = await RxUtil(
+        Rx.CASH.GET_CASH_OUT_REQUEST,
+        'GET',
+        null,
+        domain
+    );
+    return result;
+};
+
+const fetchCashOutRequestAsync = async (body) => {
+    let result = await rxFetchCashOutRequestAsync(body);
+    const handledResult = await Middlewares.handleResponseStatusMiddleware(result);
+    if (handledResult) {
+        result = await rxFetchCashOutRequestAsync(handledResult.backupDomain);
+    }
+    return CommonHelpers.handleResByStatus(result);
+};
+
+const rxFetchCashInRequestAsync = async (domain = null) => {
+    const result = await RxUtil(
+        Rx.CASH.GET_CASH_IN_REQUEST,
+        'GET',
+        null,
+        domain
+    );
+    return result;
+};
+
+const fetchCashInRequestAsync = async (body) => {
+    let result = await rxFetchCashInRequestAsync(body);
+    const handledResult = await Middlewares.handleResponseStatusMiddleware(result);
+    if (handledResult) {
+        result = await rxFetchCashInRequestAsync(handledResult.backupDomain);
+    }
+    return CommonHelpers.handleResByStatus(result);
+};
+
 export default {
     fetchCashHistoryAsync,
-    submitCashOutRequestAsync
+    submitCashOutRequestAsync,
+    fetchCashOutRequestAsync,
+    fetchCashInRequestAsync
 };

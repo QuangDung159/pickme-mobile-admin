@@ -3,6 +3,8 @@ export default {
     APP: 'App',
     NOTIFICATION: 'Notification',
     MENU: 'Menu',
-    CASH_REQUEST: 'CashRequest',
     VALIDATION_REQUEST: 'ValidationRequest',
+    CASH_IN_REQUEST: 'CashInRequest',
+    CASH_OUT_REQUEST: 'CashOutRequest',
+    CASH_HISTORY: 'CashHistory'
 };

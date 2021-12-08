@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import {
-    CashRequestScreen, MenuScreen, NotificationScreen,
+    CashHistoryScreen, CashInRequestScreen, CashOutRequestScreen, MenuScreen, NotificationScreen,
     OnboardingScreen, ValidationRequestScreen
 } from './StackScreens';
 import TabIcon from './TabIcon';
@@ -17,7 +17,9 @@ const Stack = createStackNavigator();
 const MenuStack = () => (
     <Stack.Navigator mode="card" headerMode="screen">
         {MenuScreen()}
-        {CashRequestScreen()}
+        {CashInRequestScreen()}
+        {CashOutRequestScreen()}
+        {CashHistoryScreen()}
         {ValidationRequestScreen()}
     </Stack.Navigator>
 );
@@ -25,7 +27,9 @@ const MenuStack = () => (
 const NotificationStack = () => (
     <Stack.Navigator mode="card" headerMode="screen">
         {NotificationScreen()}
-        {CashRequestScreen()}
+        {CashInRequestScreen()}
+        {CashOutRequestScreen()}
+        {CashHistoryScreen()}
         {ValidationRequestScreen()}
     </Stack.Navigator>
 );

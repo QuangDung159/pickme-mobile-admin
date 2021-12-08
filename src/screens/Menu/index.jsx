@@ -27,22 +27,44 @@ export default function Menu({ navigation }) {
 
     const listMenu = [
         {
-            title: ScreenTitle.CASH_REQUEST,
+            title: ScreenTitle.CASH_IN_REQUEST,
             icon: {
-                name: 'list-alt',
-                family: IconFamily.FONT_AWESOME_5,
-                size: 22,
+                name: 'cash-plus',
+                family: IconFamily.MATERIAL_COMMUNITY_ICONS,
+                size: 26,
             },
             onPress: () => {
-                navigation.navigate(ScreenName.CASH_REQUEST);
+                navigation.navigate(ScreenName.CASH_IN_REQUEST);
+            },
+        },
+        {
+            title: ScreenTitle.CASH_OUT_REQUEST,
+            icon: {
+                name: 'cash-minus',
+                family: IconFamily.MATERIAL_COMMUNITY_ICONS,
+                size: 26,
+            },
+            onPress: () => {
+                navigation.navigate(ScreenName.CASH_OUT_REQUEST);
+            },
+        },
+        {
+            title: ScreenTitle.CASH_HISTORY,
+            icon: {
+                name: 'account-cash-outline',
+                family: IconFamily.MATERIAL_COMMUNITY_ICONS,
+                size: 26,
+            },
+            onPress: () => {
+                navigation.navigate(ScreenName.CASH_HISTORY);
             },
         },
         {
             title: ScreenTitle.VALIDATION_REQUEST,
             icon: {
-                name: 'list-alt',
-                family: IconFamily.FONT_AWESOME_5,
-                size: 22,
+                name: 'verified-user',
+                family: IconFamily.MATERIAL_ICONS,
+                size: 26,
             },
             onPress: () => {
                 navigation.navigate(ScreenName.VALIDATION_REQUEST);

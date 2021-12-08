@@ -9,7 +9,7 @@ const {
     COLORS
 } = Theme;
 
-export default function CashRequest() {
+export default function CashOutRequest() {
     try {
         return (
             <ScrollView
@@ -22,7 +22,7 @@ export default function CashRequest() {
                     alignSelf: 'center'
                 }}
             >
-                <CustomText text="CashRequest" />
+                <CustomText text="CashOutRequest" />
             </ScrollView>
         );
     } catch (exception) {

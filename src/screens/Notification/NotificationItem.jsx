@@ -46,7 +46,7 @@ export default function NotificationItem({
                 break;
             }
             case 3: {
-                navigation.navigate(ScreenName.CASH_REQUEST);
+                navigation.navigate(ScreenName.CASH_OUT_REQUEST);
                 break;
             }
             default: {
