@@ -6,5 +6,6 @@ export default {
     VALIDATION_REQUEST: 'ValidationRequest',
     CASH_IN_REQUEST: 'CashInRequest',
     CASH_OUT_REQUEST: 'CashOutRequest',
-    CASH_HISTORY: 'CashHistory'
+    CASH_HISTORY: 'CashHistory',
+    CASH_OUT_REQUEST_DETAIL: 'CashOutRequestDetail'
 };

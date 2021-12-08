@@ -1,6 +1,7 @@
 import CashHistory from './CashHistory';
 import CashInRequest from './CashInRequest';
 import CashOutRequest from './CashOutRequest';
+import CashOutRequestDetail from './CashOutRequestDetail';
 import Menu from './Menu';
 import Notification from './Notification';
 import Onboarding from './Onboarding';
@@ -12,5 +13,6 @@ export {
     ValidationRequest,
     CashInRequest,
     CashOutRequest,
-    CashHistory
+    CashHistory,
+    CashOutRequestDetail
 };

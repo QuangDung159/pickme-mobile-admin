@@ -1,8 +1,8 @@
 import {
-    CenterLoader, CustomButton, CustomModal, CustomText
+    CenterLoader, CustomText
 } from '@components/uiComponents';
-import { Theme } from '@constants/index';
-import { CommonHelpers, MediaHelpers, ToastHelpers } from '@helpers/index';
+import { ScreenName, Theme } from '@constants/index';
+import { CommonHelpers, ToastHelpers } from '@helpers/index';
 import CashServices from '@services/CashServices';
 import React, { useEffect, useState } from 'react';
 import {
@@ -21,7 +21,6 @@ export default function CashOutRequest({ navigation }) {
     const [isShowSpinner, setIsShowSpinner] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
     const [listCashOutRequest, setListCashOutRequest] = useState();
-    const [detailModalVisible, setDetailModalVisible] = useState(false);
     const [selectedCashOut, setSelectedCashOut] = useState();
 
     useEffect(
@@ -38,7 +37,9 @@ export default function CashOutRequest({ navigation }) {
     useEffect(
         () => {
             if (selectedCashOut) {
-                setDetailModalVisible(true);
+                navigation.navigate(ScreenName.CASH_OUT_REQUEST_DETAIL, {
+                    cashOutRequest: selectedCashOut
+                });
             }
         }, [selectedCashOut]
     );
@@ -57,157 +58,10 @@ export default function CashOutRequest({ navigation }) {
         }
     };
 
-    const renderDetailModal = () => (
-        <>
-            {selectedCashOut && (
-                <CustomModal
-                    modalVisible={detailModalVisible}
-                    renderContent={() => (
-                        <View>
-                            <CustomText
-                                style={{
-                                    textAlign: 'center',
-                                    marginBottom: 20,
-                                    fontSize: SIZES.FONT_H4,
-                                    fontFamily: TEXT_BOLD
-                                }}
-                                text={'Chụp ảnh màn hình sau khi\nthực hiện chuyển tiền'}
-                            />
-
-                            <CustomText
-                                style={{
-                                    fontSize: SIZES.FONT_H4
-                                }}
-                                text="Số tiền rút: "
-                            />
-                            <CustomText
-                                style={{
-                                    textAlign: 'center',
-                                    marginBottom: 10,
-                                    fontSize: SIZES.FONT_H2,
-                                    color: COLORS.ACTIVE,
-                                    fontFamily: TEXT_BOLD
-                                }}
-                                text={CommonHelpers.formatCurrency(selectedCashOut.amount)}
-                            />
-
-                            <CustomText
-                                style={{
-                                    fontSize: SIZES.FONT_H4
-                                }}
-                                text="Chủ tài khoản: "
-                            />
-                            <CustomText
-                                style={{
-                                    textAlign: 'center',
-                                    marginBottom: 10,
-                                    fontSize: SIZES.FONT_H2,
-                                    color: COLORS.ACTIVE,
-                                    fontFamily: TEXT_BOLD
-                                }}
-                                text={selectedCashOut.ownerName}
-                            />
-
-                            <CustomText
-                                style={{
-                                    fontSize: SIZES.FONT_H4
-                                }}
-                                text="Tên ngân hàng: "
-                            />
-                            <CustomText
-                                style={{
-                                    textAlign: 'center',
-                                    marginBottom: 20,
-                                    fontSize: SIZES.FONT_H2,
-                                    color: COLORS.ACTIVE,
-                                    fontFamily: TEXT_BOLD
-                                }}
-                                text={selectedCashOut.bankName}
-                            />
-
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    width: SIZES.WIDTH_BASE * 0.8,
-                                    marginBottom: 10
-                                }}
-                            >
-                                <CustomButton
-                                    onPress={() => {
-                                        setDetailModalVisible(false);
-                                        setSelectedCashOut(null);
-                                    }}
-                                    buttonStyle={{ width: SIZES.WIDTH_BASE * 0.39 }}
-                                    type="default"
-                                    label="Từ chối"
-                                />
-                                <CustomButton
-                                    onPress={() => {
-                                        setDetailModalVisible(false);
-                                        setSelectedCashOut(null);
-                                    }}
-                                    buttonStyle={{ width: SIZES.WIDTH_BASE * 0.39 }}
-                                    type="default"
-                                    label="Đóng"
-                                />
-                            </View>
-                            <CustomButton
-                                onPress={() => {
-                                    setDetailModalVisible(false);
-                                    setSelectedCashOut(null);
-                                    onClickUploadPaidScreenshot();
-                                }}
-                                buttonStyle={{ width: SIZES.WIDTH_BASE * 0.8 }}
-                                type="active"
-                                label="Đánh dấu đã hoàn thành"
-                            />
-                        </View>
-                    )}
-                />
-            )}
-        </>
-    );
-
-    const submitCompleteCashOut = async (imgUrl) => {
-        const res = await CashServices.submitCompleteCashOutRequestAsync({
-            PaidImageUrl: imgUrl,
-            Description: 'Hoàn thành',
-            cashOutRequestId: selectedCashOut.id
-        });
-
-        const { data } = res;
-        if (data) {
-            getListWaitingCashOutRequest();
-            ToastHelpers.renderToast(data.message, 'success');
-        }
-    };
-
-    const onClickUploadPaidScreenshot = () => {
-        MediaHelpers.pickImage(false, [1, 1], (result) => handleUploadPainScreenshot(result.uri));
-    };
-
-    const handleUploadPainScreenshot = (uri) => {
-        setIsShowSpinner(true);
-
-        MediaHelpers.imgbbUploadImage(
-            uri,
-            (res) => {
-                submitCompleteCashOut(res?.data?.url || 'no-image');
-            },
-            () => {
-                ToastHelpers.renderToast();
-                submitCompleteCashOut('no-image');
-            }
-        );
-    };
-
     const renderCashOutRequestItem = (item, index) => (
         <TouchableOpacity
             onPress={
-                () => {
-                    setSelectedCashOut(item);
-                }
+                () => setSelectedCashOut(item)
             }
         >
             <View
@@ -331,7 +185,6 @@ export default function CashOutRequest({ navigation }) {
                         }}
                     >
                         {renderListCashOutRequest()}
-                        {renderDetailModal()}
                     </View>
                 )}
             </>
