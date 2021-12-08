@@ -1,4 +1,6 @@
-import { CenterLoader, CustomText } from '@components/uiComponents';
+import {
+    CenterLoader, CustomButton, CustomModal, CustomText
+} from '@components/uiComponents';
 import { Theme } from '@constants/index';
 import { CommonHelpers, ToastHelpers } from '@helpers/index';
 import CashServices from '@services/CashServices';
@@ -19,6 +21,8 @@ export default function CashOutRequest({ navigation }) {
     const [isShowSpinner, setIsShowSpinner] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
     const [listCashOutRequest, setListCashOutRequest] = useState();
+    const [detailModalVisible, setDetailModalVisible] = useState(false);
+    const [selectedCashOut, setSelectedCashOut] = useState();
 
     useEffect(
         () => {
@@ -45,11 +49,111 @@ export default function CashOutRequest({ navigation }) {
         }
     };
 
+    const renderDetailModal = () => (
+        <>
+            {selectedCashOut && (
+                <CustomModal
+                    modalVisible={detailModalVisible}
+                    renderContent={() => (
+                        <View>
+                            <CustomText
+                                style={{
+                                    textAlign: 'center',
+                                    marginBottom: 20,
+                                    fontSize: SIZES.FONT_H4,
+                                    fontFamily: TEXT_BOLD
+                                }}
+                                text={'Vui lòng kiểm tra kĩ thông tin\nnạp tiền trước khi xác nhận'}
+                            />
+
+                            <CustomText
+                                style={{
+                                    fontSize: SIZES.FONT_H4
+                                }}
+                                text="Số tiền nạp: "
+                            />
+                            <CustomText
+                                style={{
+                                    textAlign: 'center',
+                                    marginBottom: 10,
+                                    fontSize: SIZES.FONT_H2,
+                                    color: COLORS.ACTIVE,
+                                    fontFamily: TEXT_BOLD
+                                }}
+                                text={selectedCashOut.amount}
+                            />
+
+                            <CustomText
+                                style={{
+                                    fontSize: SIZES.FONT_H4
+                                }}
+                                text="Tên đăng nhập: "
+                            />
+                            <CustomText
+                                style={{
+                                    textAlign: 'center',
+                                    marginBottom: 10,
+                                    fontSize: SIZES.FONT_H2,
+                                    color: COLORS.ACTIVE,
+                                    fontFamily: TEXT_BOLD
+                                }}
+                                text="username"
+                            />
+
+                            <CustomText
+                                style={{
+                                    fontSize: SIZES.FONT_H4
+                                }}
+                                text="Mô tả: "
+                            />
+                            <CustomText
+                                style={{
+                                    textAlign: 'center',
+                                    marginBottom: 20,
+                                    fontSize: SIZES.FONT_H2,
+                                    color: COLORS.ACTIVE,
+                                    fontFamily: TEXT_BOLD
+                                }}
+                                text="description"
+                            />
+
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    width: SIZES.WIDTH_BASE * 0.8
+                                }}
+                            >
+                                <CustomButton
+                                    onPress={() => {
+                                        setDetailModalVisible(false);
+                                    }}
+                                    buttonStyle={{ width: SIZES.WIDTH_BASE * 0.39 }}
+                                    type="default"
+                                    label="Từ chối"
+                                />
+                                <CustomButton
+                                    onPress={() => {
+                                        setDetailModalVisible(false);
+                                    }}
+                                    buttonStyle={{ width: SIZES.WIDTH_BASE * 0.39 }}
+                                    type="active"
+                                    label="Đã hoàn thành"
+                                />
+                            </View>
+                        </View>
+                    )}
+                />
+            )}
+        </>
+    );
+
     const renderCashOutRequestItem = (item, index) => (
         <TouchableOpacity
             onPress={
                 () => {
-                    console.log('item :>> ', item);
+                    setSelectedCashOut(item);
+                    setDetailModalVisible(true);
                 }
             }
         >
@@ -174,6 +278,7 @@ export default function CashOutRequest({ navigation }) {
                         }}
                     >
                         {renderListCashOutRequest()}
+                        {renderDetailModal()}
                     </View>
                 )}
             </>
