@@ -1,15 +1,23 @@
 import BookingStatus from '@constants/BookingStatus';
 
-const generateMoneyStr = (moneyText) => `${numberWithCommas(moneyText.toString().trim())}`;
+const generateMoneyStr = (moneyText) => `${formatNumberWithSeparator(moneyText.toString().trim())}`;
 
-const numberWithCommas = (x) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+const formatNumberWithSeparator = (x, separator = '.') => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator);
 
-const formatCurrency = (x) => {
+const formatCurrencyUnit = (x) => {
     let strReverts = x.toString().split('').reverse().join('');
     strReverts = strReverts.replace('000000', 'm');
     strReverts = strReverts.replace('000', 'k');
     const result = strReverts.split('').reverse().join('');
     return result;
+};
+
+const formatCurrency = (number = 0, separator = '.', hasCurrencyText = false) => {
+    if (hasCurrencyText) {
+        return formatCurrencyUnit(number);
+    }
+
+    return formatNumberWithSeparator(number?.toString().trim(), separator);
 };
 
 const handleResByStatus = (response) => {
@@ -45,7 +53,8 @@ export const mappingStatusText = (status) => {
 
 export default {
     generateMoneyStr,
-    numberWithCommas,
+    formatNumberWithSeparator,
     handleResByStatus,
-    formatCurrency,
+    formatCurrencyUnit,
+    formatCurrency
 };
