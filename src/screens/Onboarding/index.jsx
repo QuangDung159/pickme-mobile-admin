@@ -1,6 +1,6 @@
 /* eslint-disable import/no-unresolved */
 import {
-    CenterLoader, CustomButton, CustomModal, CustomText, TouchableText
+    CenterLoader, CustomButton, CustomModal, CustomText
 } from '@components/uiComponents';
 import App from '@constants/App';
 import {
@@ -24,7 +24,6 @@ import SignIn from './SignIn';
 const {
     FONT: {
         TEXT_REGULAR,
-        TEXT_BOLD
     },
     SIZES,
     COLORS
@@ -34,7 +33,6 @@ export default function Onboarding({ navigation }) {
     const [isShowSpinner, setIsShowSpinner] = useState(false);
     const [deviceIdDisplay, setDeviceIdDisplay] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
-    // const [isRegisterPartner, setIsRegisterPartner] = useState(false);
 
     const isSignInOtherDeviceStore = useSelector((state) => state.userReducer.isSignInOtherDeviceStore);
 
@@ -228,38 +226,6 @@ export default function Onboarding({ navigation }) {
                             setIsShowSpinner={(isShow) => setIsShowSpinner(isShow)}
                             // isRegisterPartner={isRegisterPartner}
                         />
-                        <View
-                            style={{
-                                marginTop: 10,
-                                alignSelf: 'center',
-                                alignItems: 'center',
-                                marginBottom: 30
-                            }}
-                        >
-                            <TouchableText
-                                style={{
-                                    color: COLORS.ACTIVE,
-                                    fontSize: SIZES.FONT_H3,
-                                    fontFamily: TEXT_BOLD
-                                }}
-                                text="Đăng ký"
-                                onPress={() => navigation.navigate(ScreenName.SIGN_UP)}
-                            />
-                            {/* <TouchableText
-                                text="Quên mật khẩu?"
-                                onPress={() => navigation.navigate(ScreenName.FORGOT_PASSWORD)}
-                                style={{
-                                    color: COLORS.ACTIVE,
-                                    marginBottom: 10,
-                                    fontSize: SIZES.FONT_H3
-                                }}
-                            /> */}
-                            {/* <BecomePartnerText onPress={() => {
-                                setModalVisible(true);
-                                setIsRegisterPartner(true);
-                            }}
-                            /> */}
-                        </View>
                         <View
                             style={{
                                 position: 'absolute',

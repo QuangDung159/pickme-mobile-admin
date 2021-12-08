@@ -5,16 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import {
-    BookingDetailScreen,
-    CashInScreen, CashOutScreen, ChangePasswordScreen, ConversationListScreen,
-    CreateAccountScreen, CreateBookingScreen,
-    ForgotPasswordScreen, HomeScreen, LeaderBoardScreen, MenuScreen, MessageScreen,
-    NotificationScreen,
-    OnboardingScreen, PartnerDataScreen, PersonalScreen, PolicyScreen, ProfileScreen,
-    SettingsScreen,
-    SignInWithOTPScreen, SignUpScreen,
-    SupportScreen, UpdateInfoAccountScreen,
-    VerificationScreen
+    CashRequestScreen, MenuScreen, NotificationScreen,
+    OnboardingScreen, ValidationRequestScreen
 } from './StackScreens';
 import TabIcon from './TabIcon';
 
@@ -22,78 +14,26 @@ const { COLORS } = Theme;
 
 const Stack = createStackNavigator();
 
-const SignUpStack = () => (
-    <Stack.Navigator initialRouteName={ScreenName.SIGN_UP} mode="card" headerMode="none">
-        {SignUpScreen()}
-        {CreateAccountScreen()}
-    </Stack.Navigator>
-);
-
-const SignInWithOTPStack = () => (
-    <Stack.Navigator initialRouteName={ScreenName.SIGN_IN_WITH_OTP} mode="card" headerMode="none">
-        {SignInWithOTPScreen()}
-    </Stack.Navigator>
-);
-
 const MenuStack = () => (
     <Stack.Navigator mode="card" headerMode="screen">
         {MenuScreen()}
-        {ChangePasswordScreen()}
-        {LeaderBoardScreen()}
-        {SupportScreen()}
-        {VerificationScreen()}
-        {SettingsScreen()}
-        {PolicyScreen()}
-        {/* {PartnerDataScreen()} */}
-    </Stack.Navigator>
-);
-
-const PersonalStack = () => (
-    <Stack.Navigator name={ScreenName.PERSONAL} mode="card" headerMode="screen">
-        {PersonalScreen()}
-        {UpdateInfoAccountScreen()}
-        {CashInScreen()}
-        {BookingDetailScreen()}
-        {CreateBookingScreen()}
-        {VerificationScreen()}
-        {PartnerDataScreen()}
-        {CashOutScreen()}
-    </Stack.Navigator>
-);
-
-const HomeStack = () => (
-    <Stack.Navigator mode="card" headerMode="screen">
-        {HomeScreen()}
-        {ProfileScreen()}
-        {CreateBookingScreen()}
-        {MessageScreen()}
+        {CashRequestScreen()}
+        {ValidationRequestScreen()}
     </Stack.Navigator>
 );
 
 const NotificationStack = () => (
     <Stack.Navigator mode="card" headerMode="screen">
         {NotificationScreen()}
-        {BookingDetailScreen()}
-        {CreateBookingScreen()}
-        {PersonalScreen()}
-        {CashInScreen()}
-    </Stack.Navigator>
-);
-
-const ConversationListStack = () => (
-    <Stack.Navigator mode="card" headerMode="screen">
-        {ConversationListScreen()}
-        {MessageScreen()}
-        {/* {ProfileScreen()} */}
+        {CashRequestScreen()}
+        {ValidationRequestScreen()}
     </Stack.Navigator>
 );
 
 const OnboardingStack = () => (
     <Stack.Navigator initialRouteName={ScreenName.ONBOARDING} mode="card" headerMode="none">
         {OnboardingScreen()}
-        {/* {SignInWithOTPScreen()} */}
-        {HomeScreen()}
-        {ForgotPasswordScreen()}
+        {MenuScreen()}
     </Stack.Navigator>
 );
 
@@ -130,7 +70,7 @@ const BottomTabMenuStack = () => {
 
     return (
         <Tab.Navigator
-            initialRouteName={ScreenName.HOME}
+            initialRouteName={ScreenName.MENU}
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color }) => (
                     <TabIcon route={route} color={color} focused={focused} size={24} />
@@ -149,23 +89,6 @@ const BottomTabMenuStack = () => {
                 component={MenuStack}
             />
             <Tab.Screen
-                name={ScreenName.PERSONAL}
-                component={PersonalStack}
-            />
-            <Tab.Screen
-                name={ScreenName.HOME}
-                component={HomeStack}
-            />
-            <Tab.Screen
-                name={ScreenName.CONVERSATION_LIST}
-                component={ConversationListStack}
-                options={
-                    numberMessageUnreadDisplay !== 0
-                        ? { tabBarBadge: numberMessageUnreadDisplay }
-                        : {}
-                }
-            />
-            <Tab.Screen
                 name={ScreenName.NOTIFICATION}
                 component={NotificationStack}
                 options={tabOptions}
@@ -182,8 +105,6 @@ export default function AppStack() {
                 name={ScreenName.APP}
                 component={BottomTabMenuStack}
             />
-            <Stack.Screen name={ScreenName.SIGN_UP} component={SignUpStack} />
-            <Stack.Screen name={ScreenName.SIGN_IN_WITH_OTP} component={SignInWithOTPStack} />
         </Stack.Navigator>
     );
 }

@@ -20,32 +20,11 @@ export default class TabIcon extends PureComponent {
         const { route } = this.props;
 
         switch (route.name) {
-            case ScreenName.HOME: {
-                this.setState({
-                    name: 'home',
-                    family: IconFamily.FONT_AWESOME_5
-                });
-                break;
-            }
-            case ScreenName.PERSONAL: {
-                this.setState({
-                    name: 'user-circle-o',
-                    family: IconFamily.FONT_AWESOME
-                });
-                break;
-            }
             case ScreenName.NOTIFICATION: {
                 this.setState({
                     name: 'notifications-active',
                     family: IconFamily.MATERIAL_ICONS,
                     size: 28
-                });
-                break;
-            }
-            case ScreenName.CONVERSATION_LIST: {
-                this.setState({
-                    name: 'comment',
-                    family: IconFamily.FONT_AWESOME
                 });
                 break;
             }
