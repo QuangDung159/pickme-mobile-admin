@@ -151,7 +151,7 @@ export default function CashOutRequest({ navigation }) {
                 marginTop: 10
             }}
         >
-            {listCashOutRequest ? (
+            {listCashOutRequest && listCashOutRequest.length > 0 ? (
                 <>
                     {listCashOutRequest.map((item) => (
                         <View
