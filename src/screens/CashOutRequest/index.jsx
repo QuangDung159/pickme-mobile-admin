@@ -35,6 +35,12 @@ export default function CashOutRequest({ navigation }) {
         }, []
     );
 
+    useEffect(
+        () => {
+            setDetailModalVisible(true);
+        }, [selectedCashOut]
+    );
+
     const getListWaitingCashOutRequest = async () => {
         const res = await CashServices.fetchCashOutRequestAsync();
         const { data } = res;
@@ -127,6 +133,7 @@ export default function CashOutRequest({ navigation }) {
                                 <CustomButton
                                     onPress={() => {
                                         setDetailModalVisible(false);
+                                        setSelectedCashOut(null);
                                     }}
                                     buttonStyle={{ width: SIZES.WIDTH_BASE * 0.39 }}
                                     type="default"
@@ -135,6 +142,7 @@ export default function CashOutRequest({ navigation }) {
                                 <CustomButton
                                     onPress={() => {
                                         setDetailModalVisible(false);
+                                        setSelectedCashOut(null);
                                     }}
                                     buttonStyle={{ width: SIZES.WIDTH_BASE * 0.39 }}
                                     type="active"
@@ -153,7 +161,6 @@ export default function CashOutRequest({ navigation }) {
             onPress={
                 () => {
                     setSelectedCashOut(item);
-                    setDetailModalVisible(true);
                 }
             }
         >
