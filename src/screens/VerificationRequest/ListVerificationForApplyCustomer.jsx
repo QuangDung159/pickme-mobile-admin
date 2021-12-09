@@ -42,9 +42,7 @@ export default function ListVerificationForApplyCustomer({
         const { data } = res;
 
         if (data) {
-            let listNotComplete = [];
-            listNotComplete = data.data.filter((item) => !item.isCompleted);
-            setListVerification(listNotComplete);
+            setListVerification(data.data);
             setRefreshing(false);
         }
     };
