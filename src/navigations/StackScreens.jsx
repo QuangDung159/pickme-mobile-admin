@@ -5,7 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 // screens
 import {
     CashHistory, CashInRequest, CashOutRequest, CashOutRequestDetail, Menu, Notification,
-    Onboarding
+    Onboarding,
+    ValidationRequestDetail
 } from '@screens/index';
 import ValidationRequest from '@screens/ValidationRequest';
 import React from 'react';
@@ -153,6 +154,24 @@ export const ValidationRequestScreen = () => (
             header: ({ navigation, scene }) => (
                 <Header
                     title={ScreenTitle.VALIDATION_REQUEST}
+                    options
+                    navigation={navigation}
+                    scene={scene}
+                />
+            ),
+            cardStyle: { backgroundColor: COLORS.BASE }
+        }}
+    />
+);
+
+export const ValidationRequestDetailScreen = () => (
+    <Stack.Screen
+        name={ScreenName.VALIDATION_REQUEST_DETAIL}
+        component={ValidationRequestDetail}
+        options={{
+            header: ({ navigation, scene }) => (
+                <Header
+                    title={ScreenTitle.VALIDATION_REQUEST_DETAIL}
                     options
                     navigation={navigation}
                     scene={scene}

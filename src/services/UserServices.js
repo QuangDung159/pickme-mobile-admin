@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint import/no-unresolved: [2, { ignore: ['@env'] }] */
 import { Rx } from '@constants/index';
 import { CommonHelpers } from '@helpers/index';
@@ -360,6 +361,25 @@ const mappingCurrentUserInfo = async (data) => {
     return currentUserInfo;
 };
 
+const rxListVerificationRequestAsync = async (params, domain = null) => {
+    const result = await RxUtil(
+        `${Rx.VERIFY.GET_LIST_VERIFICATION_REQUEST}?pageIndex=${params.pageIndex || 1}&pageSize=50&isApplyForPartner=${params.isApplyForPartner}`,
+        'GET',
+        null,
+        domain
+    );
+    return result;
+};
+
+const fetchListVerificationRequestAsync = async (params) => {
+    let result = await rxListVerificationRequestAsync(params);
+    const handledResult = await Middlewares.handleResponseStatusMiddleware(result);
+    if (handledResult) {
+        result = await rxListVerificationRequestAsync(params, handledResult.backupDomain);
+    }
+    return CommonHelpers.handleResByStatus(result);
+};
+
 export default {
     loginAsync,
     fetchCurrentUserInfoAsync,
@@ -379,5 +399,6 @@ export default {
     addUserPostImageAsync,
     addVerifyDocAsync,
     submitUpdatePartnerInfoAsync,
-    fetchOtpForgotPasswordAsync
+    fetchOtpForgotPasswordAsync,
+    fetchListVerificationRequestAsync
 };

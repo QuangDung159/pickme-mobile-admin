@@ -17,7 +17,7 @@ const {
     }
 } = Theme;
 
-export default function ValidationRequest({ navigation }) {
+export default function ValidationRequestDetail({ navigation }) {
     const [isShowSpinner, setIsShowSpinner] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
     const [listVerification, setListVerification] = useState();

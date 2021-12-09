@@ -4,6 +4,7 @@ export default {
     NOTIFICATION: 'Notification',
     MENU: 'Menu',
     VALIDATION_REQUEST: 'ValidationRequest',
+    VALIDATION_REQUEST_DETAIL: 'ValidationRequestDetail',
     CASH_IN_REQUEST: 'CashInRequest',
     CASH_OUT_REQUEST: 'CashOutRequest',
     CASH_HISTORY: 'CashHistory',

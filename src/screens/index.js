@@ -6,6 +6,7 @@ import Menu from './Menu';
 import Notification from './Notification';
 import Onboarding from './Onboarding';
 import ValidationRequest from './ValidationRequest';
+import ValidationRequestDetail from './ValidationRequestDetail';
 
 export {
     Notification, Onboarding,
@@ -14,5 +15,6 @@ export {
     CashInRequest,
     CashOutRequest,
     CashHistory,
-    CashOutRequestDetail
+    CashOutRequestDetail,
+    ValidationRequestDetail
 };

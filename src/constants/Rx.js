@@ -62,6 +62,9 @@ export default {
         CREATE_CASH_IN_REQUEST: '/CashIns/CreateCashInRequest',
         SUBMIT_COMPLETE_CASH_OUT_REQUEST: '/CashOuts/CompletedCashOut'
     },
+    VERIFY: {
+        GET_LIST_VERIFICATION_REQUEST: '/Verify/ListVerifiedRequest'
+    },
     NOTIFICATION: {
         GET_MY_NOTIFICATION: '/Notifications/Notifications',
         TRIGGER_READ: '/Notifications/Read',
