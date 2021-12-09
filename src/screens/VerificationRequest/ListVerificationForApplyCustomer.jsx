@@ -17,22 +17,13 @@ const {
     }
 } = Theme;
 
-export default function ListVerificationForApplyCustomer({ navigation }) {
-    const [isShowSpinner, setIsShowSpinner] = useState(false);
+export default function ListVerificationForApplyCustomer({
+    navigation, listVerificationForApplyCustomerRoute,
+    isShowSpinner
+}) {
     const [refreshing, setRefreshing] = useState(false);
-    const [listVerification, setListVerification] = useState();
+    const [listVerification, setListVerification] = useState(listVerificationForApplyCustomerRoute);
     const [verificationSelected, setVerificationSelected] = useState();
-
-    useEffect(
-        () => {
-            const onFocus = navigation.addListener('focus', () => {
-                setIsShowSpinner(true);
-                getListWaitingVerificationRequest();
-            });
-
-            return onFocus;
-        }, []
-    );
 
     useEffect(
         () => {
@@ -54,8 +45,6 @@ export default function ListVerificationForApplyCustomer({ navigation }) {
             let listNotComplete = [];
             listNotComplete = data.data.filter((item) => !item.isCompleted);
             setListVerification(listNotComplete);
-
-            setIsShowSpinner(false);
             setRefreshing(false);
         }
     };
