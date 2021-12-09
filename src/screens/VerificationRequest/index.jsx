@@ -17,7 +17,7 @@ const {
     }
 } = Theme;
 
-export default function ValidationRequest({ navigation }) {
+export default function VerificationRequest({ navigation }) {
     const [isShowSpinner, setIsShowSpinner] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
     const [listVerification, setListVerification] = useState();
@@ -37,7 +37,7 @@ export default function ValidationRequest({ navigation }) {
     useEffect(
         () => {
             if (verificationSelected) {
-                navigation.navigate(ScreenName.VALIDATION_REQUEST_DETAIL, {
+                navigation.navigate(ScreenName.VERIFICATION_REQUEST_DETAIL, {
                     verification: verificationSelected
                 });
             }

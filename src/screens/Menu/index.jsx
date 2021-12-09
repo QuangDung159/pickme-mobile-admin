@@ -62,14 +62,14 @@ export default function Menu({ navigation }) {
             },
         },
         {
-            title: ScreenTitle.VALIDATION_REQUEST,
+            title: ScreenTitle.VERIFICATION_REQUEST,
             icon: {
                 name: 'verified-user',
                 family: IconFamily.MATERIAL_ICONS,
                 size: 26,
             },
             onPress: () => {
-                navigation.navigate(ScreenName.VALIDATION_REQUEST);
+                navigation.navigate(ScreenName.VERIFICATION_REQUEST);
             },
         },
         {

@@ -40,7 +40,7 @@ export default function NotificationItem({
     const handleNavigation = (navigationId, navigationType) => {
         switch (navigationType) {
             case 2: {
-                navigation.navigate(ScreenName.VALIDATION_REQUEST, {
+                navigation.navigate(ScreenName.VERIFICATION_REQUEST, {
                     bookingId: navigationId,
                 });
                 break;

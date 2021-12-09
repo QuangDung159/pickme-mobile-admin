@@ -6,9 +6,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import {
     CashHistory, CashInRequest, CashOutRequest, CashOutRequestDetail, Menu, Notification,
     Onboarding,
-    ValidationRequestDetail
+    VerificationRequestDetail
 } from '@screens/index';
-import ValidationRequest from '@screens/ValidationRequest';
+import VerificationRequest from '@screens/VerificationRequest';
 import React from 'react';
 
 const Stack = createStackNavigator();
@@ -146,14 +146,14 @@ export const CashOutRequestDetailScreen = () => (
     />
 );
 
-export const ValidationRequestScreen = () => (
+export const VerificationRequestScreen = () => (
     <Stack.Screen
-        name={ScreenName.VALIDATION_REQUEST}
-        component={ValidationRequest}
+        name={ScreenName.VERIFICATION_REQUEST}
+        component={VerificationRequest}
         options={{
             header: ({ navigation, scene }) => (
                 <Header
-                    title={ScreenTitle.VALIDATION_REQUEST}
+                    title={ScreenTitle.VERIFICATION_REQUEST}
                     options
                     navigation={navigation}
                     scene={scene}
@@ -164,14 +164,14 @@ export const ValidationRequestScreen = () => (
     />
 );
 
-export const ValidationRequestDetailScreen = () => (
+export const VerificationRequestDetailScreen = () => (
     <Stack.Screen
-        name={ScreenName.VALIDATION_REQUEST_DETAIL}
-        component={ValidationRequestDetail}
+        name={ScreenName.VERIFICATION_REQUEST_DETAIL}
+        component={VerificationRequestDetail}
         options={{
             header: ({ navigation, scene }) => (
                 <Header
-                    title={ScreenTitle.VALIDATION_REQUEST_DETAIL}
+                    title={ScreenTitle.VERIFICATION_REQUEST_DETAIL}
                     options
                     navigation={navigation}
                     scene={scene}

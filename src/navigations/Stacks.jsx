@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import {
     CashHistoryScreen, CashInRequestScreen, CashOutRequestDetailScreen, CashOutRequestScreen,
     MenuScreen, NotificationScreen,
-    OnboardingScreen, ValidationRequestDetailScreen, ValidationRequestScreen
+    OnboardingScreen, VerificationRequestDetailScreen, VerificationRequestScreen
 } from './StackScreens';
 import TabIcon from './TabIcon';
 
@@ -22,8 +22,8 @@ const MenuStack = () => (
         {CashOutRequestScreen()}
         {CashOutRequestDetailScreen()}
         {CashHistoryScreen()}
-        {ValidationRequestScreen()}
-        {ValidationRequestDetailScreen()}
+        {VerificationRequestScreen()}
+        {VerificationRequestDetailScreen()}
     </Stack.Navigator>
 );
 
@@ -34,8 +34,8 @@ const NotificationStack = () => (
         {CashOutRequestScreen()}
         {CashOutRequestDetailScreen()}
         {CashHistoryScreen()}
-        {ValidationRequestScreen()}
-        {ValidationRequestDetailScreen()}
+        {VerificationRequestScreen()}
+        {VerificationRequestDetailScreen()}
     </Stack.Navigator>
 );
 

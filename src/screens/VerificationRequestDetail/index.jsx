@@ -4,7 +4,7 @@ import {
 } from '@components/uiComponents';
 import { IconFamily, ScreenName, Theme } from '@constants/index';
 import { ToastHelpers } from '@helpers/index';
-import CashServices from '@services/CashServices';
+import { UserServices } from '@services/index';
 import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
@@ -16,22 +16,30 @@ const {
     }
 } = Theme;
 
-export default function ValidationRequestDetail({ navigation, route }) {
+export default function VerificationRequestDetail({ navigation, route }) {
     const [isShowSpinner, setIsShowSpinner] = useState(false);
+    const [verifyNote, setVerifyNote] = useState('Đầy đủ chứng từ xác thực');
+    const [isApprove, setIsApprove] = useState(false);
 
     const verification = route?.params?.verification || '';
 
-    const submitCompleteCashOut = async () => {
+    const submitVerificationRequest = async () => {
         setIsShowSpinner(true);
-        const res = await CashServices.submitCompleteCashOutRequestAsync({
-            Description: 'Hoàn thành',
-            cashOutRequestId: verification.id
-        });
+        const params = {
+            customerId: verification.id,
+            body: {
+                IsPartnerVerified: true,
+                IsCustomerVerified: verification.isCustomerVerified,
+                IsApproved: isApprove,
+                verifyNote
+            }
+        };
+        const res = await UserServices.submitVerificationRequestAsync(params);
 
         const { data } = res;
         if (data) {
             ToastHelpers.renderToast(data.message, 'success');
-            navigation.navigate(ScreenName.CASH_OUT_REQUEST);
+            navigation.navigate(ScreenName.VERIFICATION_REQUEST);
         } else {
             setIsShowSpinner(false);
         }
@@ -138,7 +146,7 @@ export default function ValidationRequestDetail({ navigation, route }) {
                                     />
                                     <CustomButton
                                         onPress={() => {
-                                            submitCompleteCashOut();
+                                            submitVerificationRequest();
                                         }}
                                         buttonStyle={{ width: SIZES.WIDTH_BASE * 0.44 }}
                                         type="active"

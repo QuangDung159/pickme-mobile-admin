@@ -107,7 +107,7 @@ export default function Main() {
     const handleNotificationByType = (notificationType) => {
         switch (notificationType) {
             case 2: {
-                navigationObj.navigate(ScreenName.VALIDATION_REQUEST);
+                navigationObj.navigate(ScreenName.VERIFICATION_REQUEST);
                 break;
             }
             case 3: {
@@ -119,7 +119,7 @@ export default function Main() {
                 break;
             }
             case 5: {
-                navigationObj.navigate(ScreenName.VALIDATION_REQUEST);
+                navigationObj.navigate(ScreenName.VERIFICATION_REQUEST);
                 break;
             }
             default: {

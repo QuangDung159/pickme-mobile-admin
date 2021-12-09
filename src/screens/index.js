@@ -5,16 +5,16 @@ import CashOutRequestDetail from './CashOutRequestDetail';
 import Menu from './Menu';
 import Notification from './Notification';
 import Onboarding from './Onboarding';
-import ValidationRequest from './ValidationRequest';
-import ValidationRequestDetail from './ValidationRequestDetail';
+import VerificationRequest from './VerificationRequest';
+import VerificationRequestDetail from './VerificationRequestDetail';
 
 export {
     Notification, Onboarding,
     Menu,
-    ValidationRequest,
+    VerificationRequest,
     CashInRequest,
     CashOutRequest,
     CashHistory,
     CashOutRequestDetail,
-    ValidationRequestDetail
+    VerificationRequestDetail
 };
