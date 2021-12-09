@@ -63,7 +63,8 @@ export default {
         SUBMIT_COMPLETE_CASH_OUT_REQUEST: '/CashOuts/CompletedCashOut'
     },
     VERIFY: {
-        GET_LIST_VERIFICATION_REQUEST: '/Verify/ListVerifiedRequest'
+        GET_LIST_VERIFICATION_REQUEST: '/Verify/ListVerifiedRequest',
+        SUBMIT_VERIFICATION_RESULT: '/Verify/ApproveUser'
     },
     NOTIFICATION: {
         GET_MY_NOTIFICATION: '/Notifications/Notifications',

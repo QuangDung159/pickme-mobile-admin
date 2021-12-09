@@ -380,6 +380,25 @@ const fetchListVerificationRequestAsync = async (params) => {
     return CommonHelpers.handleResByStatus(result);
 };
 
+const rxSubmitVerificationRequestAsync = async (params, domain = null) => {
+    const result = await RxUtil(
+        `${Rx.VERIFY.SUBMIT_VERIFICATION_RESULT}/${params.customerId}`,
+        'POST',
+        params.body,
+        domain
+    );
+    return result;
+};
+
+const submitVerificationRequestAsync = async (params) => {
+    let result = await rxSubmitVerificationRequestAsync(params);
+    const handledResult = await Middlewares.handleResponseStatusMiddleware(result);
+    if (handledResult) {
+        result = await rxSubmitVerificationRequestAsync(params, handledResult.backupDomain);
+    }
+    return CommonHelpers.handleResByStatus(result);
+};
+
 export default {
     loginAsync,
     fetchCurrentUserInfoAsync,
@@ -400,5 +419,6 @@ export default {
     addVerifyDocAsync,
     submitUpdatePartnerInfoAsync,
     fetchOtpForgotPasswordAsync,
-    fetchListVerificationRequestAsync
+    fetchListVerificationRequestAsync,
+    submitVerificationRequestAsync
 };
