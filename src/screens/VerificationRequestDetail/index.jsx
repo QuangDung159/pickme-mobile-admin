@@ -1,6 +1,6 @@
 import { VerificationDocSection } from '@components/businessComponents';
 import {
-    CenterLoader, CustomButton, CustomText, IconCustom, NoteText
+    CenterLoader, CustomButton, CustomInput, CustomText, IconCustom, NoteText
 } from '@components/uiComponents';
 import { IconFamily, ScreenName, Theme } from '@constants/index';
 import { ToastHelpers } from '@helpers/index';
@@ -18,12 +18,11 @@ const {
 
 export default function VerificationRequestDetail({ navigation, route }) {
     const [isShowSpinner, setIsShowSpinner] = useState(false);
-    const [verifyNote, setVerifyNote] = useState('Đầy đủ chứng từ xác thực');
-    const [isApprove, setIsApprove] = useState(false);
+    const [verifyNote, setVerifyNote] = useState('Đầy đủ hình ảnh xác thực');
 
     const verification = route?.params?.verification || '';
 
-    const submitVerificationRequest = async () => {
+    const submitVerificationRequest = async (isApprove) => {
         setIsShowSpinner(true);
         const params = {
             customerId: verification.id,
@@ -128,6 +127,20 @@ export default function VerificationRequestDetail({ navigation, route }) {
 
                                 </View>
 
+                                <CustomInput
+                                    multiline
+                                    value={verifyNote}
+                                    onChangeText={(input) => setVerifyNote(input)}
+                                    inputStyle={{
+                                        height: 60
+                                    }}
+                                    containerStyle={{
+                                        marginVertical: 10,
+                                        width: SIZES.WIDTH_BASE * 0.9
+                                    }}
+                                    label="Ghi chú:"
+                                />
+
                                 <View
                                     style={{
                                         flexDirection: 'row',
@@ -138,7 +151,7 @@ export default function VerificationRequestDetail({ navigation, route }) {
                                 >
                                     <CustomButton
                                         onPress={() => {
-                                            console.log('reject');
+                                            submitVerificationRequest(false);
                                         }}
                                         buttonStyle={{ width: SIZES.WIDTH_BASE * 0.44 }}
                                         type="default"
@@ -146,7 +159,7 @@ export default function VerificationRequestDetail({ navigation, route }) {
                                     />
                                     <CustomButton
                                         onPress={() => {
-                                            submitVerificationRequest();
+                                            submitVerificationRequest(true);
                                         }}
                                         buttonStyle={{ width: SIZES.WIDTH_BASE * 0.44 }}
                                         type="active"
