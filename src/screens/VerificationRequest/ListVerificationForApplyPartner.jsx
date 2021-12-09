@@ -152,6 +152,7 @@ export default function ListVerificationForApplyPartner({ navigation, listVerifi
                             width: SIZES.WIDTH_BASE,
                             minHeight: SIZES.HEIGHT_BASE
                         }}
+                        showsVerticalScrollIndicator={false}
                         refreshControl={(
                             <RefreshControl
                                 refreshing={refreshing}
