@@ -21,6 +21,7 @@ export default function VerificationRequestDetail({ navigation, route }) {
     const [verifyNote, setVerifyNote] = useState('Đầy đủ hình ảnh xác thực');
 
     const verification = route?.params?.verification || '';
+    const isForPartner = route?.params?.isForPartner || false;
 
     const submitVerificationRequest = async (isApprove) => {
         setIsShowSpinner(true);
@@ -28,7 +29,7 @@ export default function VerificationRequestDetail({ navigation, route }) {
             customerId: verification.id,
             body: {
                 IsPartnerVerified: true,
-                IsCustomerVerified: verification.isCustomerVerified,
+                IsCustomerVerified: isForPartner ? true : verification.isCustomerVerified,
                 IsApproved: isApprove,
                 verifyNote
             }

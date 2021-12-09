@@ -26,7 +26,8 @@ export default function ListVerificationForApplyPartner({ navigation, listVerifi
         () => {
             if (verificationSelected) {
                 navigation.navigate(ScreenName.VERIFICATION_REQUEST_DETAIL, {
-                    verification: verificationSelected
+                    verification: verificationSelected,
+                    isForPartner: true
                 });
             }
         }, [verificationSelected]
