@@ -20,14 +20,14 @@ export default function ValidationRequestDetail({ navigation, route }) {
     const [isShowSpinner, setIsShowSpinner] = useState(false);
     const [imageUrl, setImageUrl] = useState();
 
-    const verificationSelected = route?.params?.cashOutRequest || '';
+    const verification = route?.params?.verification || '';
 
     const submitCompleteCashOut = async () => {
         setIsShowSpinner(true);
         const res = await CashServices.submitCompleteCashOutRequestAsync({
             PaidImageUrl: imageUrl || 'no-image',
             Description: 'Hoàn thành',
-            cashOutRequestId: verificationSelected.id
+            cashOutRequestId: verification.id
         });
 
         const { data } = res;
@@ -73,7 +73,7 @@ export default function ValidationRequestDetail({ navigation, route }) {
                             marginVertical: 5
                         }}
                     >
-                        {verificationSelected && (
+                        {verification && (
                             <View>
                                 <View
                                     style={{
@@ -83,7 +83,8 @@ export default function ValidationRequestDetail({ navigation, route }) {
                                     <NoteText
                                         width={SIZES.WIDTH_BASE * 0.9}
                                         title="Lưu ý:"
-                                        content="Chụp ảnh màn hình sau khi thực hiện chuyển tiền"
+                                        // eslint-disable-next-line max-len
+                                        content={'Kiểm tra kĩ các chi tiết trên ảnh (số thẻ, họ tên, các dấu mộc hợp pháp).\nNếu ảnh mờ, không rõ số, số có dấu hiệu tẩy xoá thì phải từ chối xác thực.'}
                                         contentStyle={{
                                             fontSize: SIZES.FONT_H4,
                                             color: COLORS.ACTIVE,
@@ -123,7 +124,7 @@ export default function ValidationRequestDetail({ navigation, route }) {
                                         color: COLORS.ACTIVE,
                                         fontFamily: TEXT_BOLD
                                     }}
-                                    text={CommonHelpers.formatCurrency(verificationSelected.amount)}
+                                    text={CommonHelpers.formatCurrency(verification.amount)}
                                 />
 
                                 <CustomText
@@ -140,7 +141,7 @@ export default function ValidationRequestDetail({ navigation, route }) {
                                         color: COLORS.ACTIVE,
                                         fontFamily: TEXT_BOLD
                                     }}
-                                    text={verificationSelected.ownerName}
+                                    text={verification.ownerName}
                                 />
 
                                 <CustomText
@@ -157,7 +158,7 @@ export default function ValidationRequestDetail({ navigation, route }) {
                                         color: COLORS.ACTIVE,
                                         fontFamily: TEXT_BOLD
                                     }}
-                                    text={verificationSelected.bankName}
+                                    text={verification.bankName}
                                 />
 
                                 <CustomButton
