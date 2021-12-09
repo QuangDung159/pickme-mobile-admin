@@ -67,8 +67,8 @@ export default function VerificationRequest({ navigation, route }) {
     );
 
     const renderScene = SceneMap({
-        listVerificationForApplyCustomer: listVerificationForApplyPartnerRoute,
-        listVerificationForApplyPartner: listVerificationForApplyCustomerRoute,
+        listVerificationForApplyCustomer: listVerificationForApplyCustomerRoute,
+        listVerificationForApplyPartner: listVerificationForApplyPartnerRoute,
     });
 
     try {

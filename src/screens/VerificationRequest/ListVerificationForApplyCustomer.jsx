@@ -18,11 +18,11 @@ const {
 } = Theme;
 
 export default function ListVerificationForApplyCustomer({
-    navigation, listVerificationForApplyCustomerRoute,
+    navigation, listVerificationForCustomer,
     isShowSpinner
 }) {
     const [refreshing, setRefreshing] = useState(false);
-    const [listVerification, setListVerification] = useState(listVerificationForApplyCustomerRoute);
+    const [listVerification, setListVerification] = useState(listVerificationForCustomer);
     const [verificationSelected, setVerificationSelected] = useState();
 
     useEffect(
@@ -37,7 +37,7 @@ export default function ListVerificationForApplyCustomer({
 
     const getListWaitingVerificationRequest = async () => {
         const res = await UserServices.fetchListVerificationRequestAsync({
-            isApplyForPartner: true,
+            isApplyForPartner: false,
         });
         const { data } = res;
 
