@@ -3,7 +3,7 @@ import {
 } from '@components/uiComponents';
 import { ScreenName, Theme } from '@constants/index';
 import { CommonHelpers, ToastHelpers } from '@helpers/index';
-import CashServices from '@services/CashServices';
+import { UserServices } from '@services/index';
 import React, { useEffect, useState } from 'react';
 import {
     RefreshControl, ScrollView, TouchableOpacity, View
@@ -45,7 +45,9 @@ export default function ValidationRequest({ navigation }) {
     );
 
     const getListWaitingVerificationRequest = async () => {
-        const res = await CashServices.fetchCashOutRequestAsync();
+        const res = await UserServices.fetchListVerificationRequestAsync({
+            isApplyForPartner: true,
+        });
         const { data } = res;
 
         if (data) {
@@ -93,16 +95,10 @@ export default function ValidationRequest({ navigation }) {
                             }}
                         >
                             <CustomText
-                                text="Số tiền rút:"
+                                text="Tên đăng nhập:"
                             />
                             <CustomText
-                                text="Số tiền trước:"
-                            />
-                            <CustomText
-                                text="Số tiền sau:"
-                            />
-                            <CustomText
-                                text="Chủ tài khoản:"
+                                text="Ngày yêu cầu:"
                             />
                         </View>
                         <View
@@ -114,25 +110,13 @@ export default function ValidationRequest({ navigation }) {
                                 style={{
                                     fontFamily: TEXT_BOLD
                                 }}
-                                text={`${CommonHelpers.formatCurrency(item.amount)}`}
+                                text={`${item.userName}`}
                             />
                             <CustomText
                                 style={{
                                     fontFamily: TEXT_BOLD
                                 }}
-                                text={`${CommonHelpers.formatCurrency(item.previousWalletAmount)}`}
-                            />
-                            <CustomText
-                                style={{
-                                    fontFamily: TEXT_BOLD
-                                }}
-                                text={`${CommonHelpers.formatCurrency(item.updatedWalletAmount)}`}
-                            />
-                            <CustomText
-                                style={{
-                                    fontFamily: TEXT_BOLD
-                                }}
-                                text={`${item.ownerName}`}
+                                text={`${CommonHelpers.formatTime(item.applyDate)}`}
                             />
                         </View>
                     </View>

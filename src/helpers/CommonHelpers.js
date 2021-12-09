@@ -1,4 +1,5 @@
 import BookingStatus from '@constants/BookingStatus';
+import moment from 'moment';
 
 const generateMoneyStr = (moneyText) => `${formatNumberWithSeparator(moneyText.toString().trim())}`;
 
@@ -51,10 +52,17 @@ export const mappingStatusText = (status) => {
     }
 };
 
+// 2021-12-08T21:26:26.61144
+export const formatTime = (timeString, format = 'HH:mm:ss DD-MM-YYYY') => {
+    const timestamp = new Date(timeString);
+    return moment(timestamp).format(format);
+};
+
 export default {
     generateMoneyStr,
     formatNumberWithSeparator,
     handleResByStatus,
     formatCurrencyUnit,
-    formatCurrency
+    formatCurrency,
+    formatTime
 };

@@ -363,7 +363,7 @@ const mappingCurrentUserInfo = async (data) => {
 
 const rxListVerificationRequestAsync = async (params, domain = null) => {
     const result = await RxUtil(
-        `${Rx.VERIFY.GET_LIST_VERIFICATION_REQUEST}?pageIndex=${params.pageIndex || 1}&pageSize=50&isApplyForPartner=${params.isApplyForPartner}`,
+        `${Rx.VERIFY.GET_LIST_VERIFICATION_REQUEST}?pageIndex=${params.pageIndex || 1}&pageSize=60&isApplyForPartner=${params.isApplyForPartner}`,
         'GET',
         null,
         domain

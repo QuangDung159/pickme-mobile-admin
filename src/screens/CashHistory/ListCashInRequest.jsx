@@ -2,7 +2,6 @@ import { CenterLoader, CustomText } from '@components/uiComponents';
 import { Theme } from '@constants/index';
 import { CommonHelpers, ToastHelpers } from '@helpers/index';
 import CashServices from '@services/CashServices';
-import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { FlatList, RefreshControl, View } from 'react-native';
 
@@ -39,11 +38,6 @@ export default function ListCashInRequest({ navigation }) {
             setIsShowSpinner(false);
             setRefreshing(false);
         }
-    };
-
-    const formatTime = (timeString) => {
-        const timestamp = new Date(timeString);
-        return moment(timestamp).format('HH:mm:ss DD-MM-YY');
     };
 
     const renderCashInRequestItem = (item, index) => (
@@ -125,7 +119,7 @@ export default function ListCashInRequest({ navigation }) {
                             style={{
                                 fontFamily: TEXT_BOLD
                             }}
-                            text={`${formatTime(item.createdDate)}`}
+                            text={`${CommonHelpers.formatTime(item.createdDate)}`}
                         />
                     </View>
                 </View>
