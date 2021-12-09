@@ -1,12 +1,12 @@
+import { VerificationDocSection } from '@components/businessComponents';
 import {
     CenterLoader, CustomButton, CustomText, IconCustom, NoteText
 } from '@components/uiComponents';
 import { IconFamily, ScreenName, Theme } from '@constants/index';
-import { CommonHelpers, MediaHelpers, ToastHelpers } from '@helpers/index';
+import { CommonHelpers, ToastHelpers } from '@helpers/index';
 import CashServices from '@services/CashServices';
 import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import ImageScalable from 'react-native-scalable-image';
 
 const {
     SIZES,
@@ -18,14 +18,12 @@ const {
 
 export default function ValidationRequestDetail({ navigation, route }) {
     const [isShowSpinner, setIsShowSpinner] = useState(false);
-    const [imageUrl, setImageUrl] = useState();
 
     const verification = route?.params?.verification || '';
 
     const submitCompleteCashOut = async () => {
         setIsShowSpinner(true);
         const res = await CashServices.submitCompleteCashOutRequestAsync({
-            PaidImageUrl: imageUrl || 'no-image',
             Description: 'Hoàn thành',
             cashOutRequestId: verification.id
         });
@@ -37,26 +35,6 @@ export default function ValidationRequestDetail({ navigation, route }) {
         } else {
             setIsShowSpinner(false);
         }
-    };
-
-    const onClickUploadPaidScreenshot = () => {
-        MediaHelpers.pickImage(false, [1, 1], (result) => handleUploadPainScreenshot(result.uri), 0.2);
-    };
-
-    const handleUploadPainScreenshot = (uri) => {
-        setIsShowSpinner(true);
-
-        MediaHelpers.imgbbUploadImage(
-            uri,
-            (res) => {
-                setImageUrl(res?.data?.url || '');
-                setIsShowSpinner(false);
-            },
-            () => {
-                ToastHelpers.renderToast();
-                setIsShowSpinner(false);
-            }
-        );
     };
 
     try {
@@ -161,37 +139,18 @@ export default function ValidationRequestDetail({ navigation, route }) {
                                     text={verification.bankName}
                                 />
 
-                                <CustomButton
-                                    onPress={() => {
-                                        onClickUploadPaidScreenshot();
-                                    }}
-                                    buttonStyle={{ width: SIZES.WIDTH_BASE * 0.9, marginBottom: 10 }}
-                                    type="active"
-                                    label="Ảnh chụp màn hình chuyển khoản"
-                                />
-
                                 <View
                                     style={{
                                         alignSelf: 'center',
                                         marginBottom: 20
                                     }}
                                 >
-                                    {imageUrl ? (
-                                        <ImageScalable
-                                            style={{
-                                                zIndex: 99
-                                            }}
-                                            width={SIZES.WIDTH_BASE * 0.9}
-                                            source={{ uri: imageUrl }}
-                                        />
-                                    ) : (
-                                        <CustomText
-                                            style={{
-                                                textAlign: 'center',
-                                            }}
-                                            text="Chưa có ảnh"
-                                        />
-                                    )}
+                                    <VerificationDocSection
+                                        setIsShowSpinner={(isShow) => setIsShowSpinner(isShow)}
+                                        navigation={navigation}
+                                        route={route}
+                                        verificationDocuments={verification?.verificationDocuments || []}
+                                    />
 
                                 </View>
 
@@ -217,7 +176,7 @@ export default function ValidationRequestDetail({ navigation, route }) {
                                         }}
                                         buttonStyle={{ width: SIZES.WIDTH_BASE * 0.44 }}
                                         type="active"
-                                        label="Xác nhận"
+                                        label="Xác thực"
                                     />
                                 </View>
                             </View>
