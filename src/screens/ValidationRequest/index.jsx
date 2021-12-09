@@ -37,7 +37,7 @@ export default function ValidationRequest({ navigation }) {
     useEffect(
         () => {
             if (verificationSelected) {
-                navigation.navigate(ScreenName.CASH_OUT_REQUEST_DETAIL, {
+                navigation.navigate(ScreenName.VALIDATION_REQUEST_DETAIL, {
                     verification: verificationSelected
                 });
             }

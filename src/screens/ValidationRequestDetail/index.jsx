@@ -1,13 +1,12 @@
 import {
-    CenterLoader, CustomText
+    CenterLoader, CustomButton, CustomText, IconCustom, NoteText
 } from '@components/uiComponents';
-import { ScreenName, Theme } from '@constants/index';
-import { CommonHelpers, ToastHelpers } from '@helpers/index';
+import { IconFamily, ScreenName, Theme } from '@constants/index';
+import { CommonHelpers, MediaHelpers, ToastHelpers } from '@helpers/index';
 import CashServices from '@services/CashServices';
-import React, { useEffect, useState } from 'react';
-import {
-    RefreshControl, ScrollView, TouchableOpacity, View
-} from 'react-native';
+import React, { useState } from 'react';
+import { ScrollView, View } from 'react-native';
+import ImageScalable from 'react-native-scalable-image';
 
 const {
     SIZES,
@@ -17,160 +16,48 @@ const {
     }
 } = Theme;
 
-export default function ValidationRequestDetail({ navigation }) {
+export default function ValidationRequestDetail({ navigation, route }) {
     const [isShowSpinner, setIsShowSpinner] = useState(false);
-    const [refreshing, setRefreshing] = useState(false);
-    const [listVerification, setListVerification] = useState();
-    const [verificationSelected, setVerificationSelected] = useState();
+    const [imageUrl, setImageUrl] = useState();
 
-    useEffect(
-        () => {
-            const onFocus = navigation.addListener('focus', () => {
-                setIsShowSpinner(true);
-                getListWaitingVerificationRequest();
-            });
+    const verificationSelected = route?.params?.cashOutRequest || '';
 
-            return onFocus;
-        }, []
-    );
+    const submitCompleteCashOut = async () => {
+        setIsShowSpinner(true);
+        const res = await CashServices.submitCompleteCashOutRequestAsync({
+            PaidImageUrl: imageUrl || 'no-image',
+            Description: 'Hoàn thành',
+            cashOutRequestId: verificationSelected.id
+        });
 
-    useEffect(
-        () => {
-            if (verificationSelected) {
-                navigation.navigate(ScreenName.CASH_OUT_REQUEST_DETAIL, {
-                    verification: verificationSelected
-                });
-            }
-        }, [verificationSelected]
-    );
-
-    const getListWaitingVerificationRequest = async () => {
-        const res = await CashServices.fetchCashOutRequestAsync();
         const { data } = res;
-
         if (data) {
-            let listNotComplete = [];
-            listNotComplete = data.data.filter((item) => !item.isCompleted);
-            setListVerification(listNotComplete);
-
+            ToastHelpers.renderToast(data.message, 'success');
+            navigation.navigate(ScreenName.CASH_OUT_REQUEST);
+        } else {
             setIsShowSpinner(false);
-            setRefreshing(false);
         }
     };
 
-    const renderVerificationRequestItem = (item) => (
-        <TouchableOpacity
-            onPress={
-                () => setVerificationSelected(item)
-            }
-        >
-            <View
-                style={{
-                    width: SIZES.WIDTH_BASE * 0.95,
-                    alignSelf: 'center',
-                    borderColor: COLORS.ACTIVE,
-                    borderRadius: 20,
-                    borderWidth: 1,
-                    marginBottom: 10,
-                }}
-            >
-                <View
-                    style={{
-                        width: SIZES.WIDTH_BASE * 0.9,
-                        alignSelf: 'center',
-                        marginVertical: 10
-                    }}
-                >
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            alignItems: 'center'
-                        }}
-                    >
-                        <View
-                            style={{
-                                width: SIZES.WIDTH_BASE * 0.4
-                            }}
-                        >
-                            <CustomText
-                                text="Số tiền rút:"
-                            />
-                            <CustomText
-                                text="Số tiền trước:"
-                            />
-                            <CustomText
-                                text="Số tiền sau:"
-                            />
-                            <CustomText
-                                text="Chủ tài khoản:"
-                            />
-                        </View>
-                        <View
-                            style={{
-                                width: SIZES.WIDTH_BASE * 0.5
-                            }}
-                        >
-                            <CustomText
-                                style={{
-                                    fontFamily: TEXT_BOLD
-                                }}
-                                text={`${CommonHelpers.formatCurrency(item.amount)}`}
-                            />
-                            <CustomText
-                                style={{
-                                    fontFamily: TEXT_BOLD
-                                }}
-                                text={`${CommonHelpers.formatCurrency(item.previousWalletAmount)}`}
-                            />
-                            <CustomText
-                                style={{
-                                    fontFamily: TEXT_BOLD
-                                }}
-                                text={`${CommonHelpers.formatCurrency(item.updatedWalletAmount)}`}
-                            />
-                            <CustomText
-                                style={{
-                                    fontFamily: TEXT_BOLD
-                                }}
-                                text={`${item.ownerName}`}
-                            />
-                        </View>
-                    </View>
-                </View>
-            </View>
-        </TouchableOpacity>
-    );
-
-    const onRefresh = () => {
-        getListWaitingVerificationRequest();
+    const onClickUploadPaidScreenshot = () => {
+        MediaHelpers.pickImage(false, [1, 1], (result) => handleUploadPainScreenshot(result.uri), 0.2);
     };
 
-    const renderListWaitingVerificationRequest = () => (
-        <View
-            style={{
-                marginTop: 10
-            }}
-        >
-            {listVerification && listVerification.length > 0 ? (
-                <>
-                    {listVerification.map((item) => (
-                        <View
-                            key={item.id}
-                        >
-                            {renderVerificationRequestItem(item)}
-                        </View>
-                    ))}
-                </>
-            ) : (
-                <CustomText
-                    style={{
-                        textAlign: 'center',
-                    }}
-                    text="Không có dữ liệu"
-                />
-            )}
-        </View>
-    );
+    const handleUploadPainScreenshot = (uri) => {
+        setIsShowSpinner(true);
+
+        MediaHelpers.imgbbUploadImage(
+            uri,
+            (res) => {
+                setImageUrl(res?.data?.url || '');
+                setIsShowSpinner(false);
+            },
+            () => {
+                ToastHelpers.renderToast();
+                setIsShowSpinner(false);
+            }
+        );
+    };
 
     try {
         return (
@@ -180,18 +67,160 @@ export default function ValidationRequestDetail({ navigation }) {
                 ) : (
                     <ScrollView
                         contentContainerStyle={{
-                            width: SIZES.WIDTH_BASE,
-                            minHeight: SIZES.HEIGHT_BASE
+                            width: SIZES.WIDTH_BASE * 0.9,
+                            backgroundColor: COLORS.BASE,
+                            alignSelf: 'center',
+                            marginVertical: 5
                         }}
-                        refreshControl={(
-                            <RefreshControl
-                                refreshing={refreshing}
-                                onRefresh={() => onRefresh()}
-                                tintColor={COLORS.ACTIVE}
-                            />
-                        )}
                     >
-                        {renderListWaitingVerificationRequest()}
+                        {verificationSelected && (
+                            <View>
+                                <View
+                                    style={{
+                                        marginBottom: 10
+                                    }}
+                                >
+                                    <NoteText
+                                        width={SIZES.WIDTH_BASE * 0.9}
+                                        title="Lưu ý:"
+                                        content="Chụp ảnh màn hình sau khi thực hiện chuyển tiền"
+                                        contentStyle={{
+                                            fontSize: SIZES.FONT_H4,
+                                            color: COLORS.ACTIVE,
+                                            marginTop: 5,
+                                        }}
+                                        iconComponent={(
+                                            <IconCustom
+                                                name="info-circle"
+                                                family={IconFamily.FONT_AWESOME}
+                                                size={18}
+                                                color={COLORS.ACTIVE}
+                                            />
+                                        )}
+                                    />
+                                </View>
+
+                                <CustomText
+                                    style={{
+                                        fontSize: SIZES.FONT_H2,
+                                        fontFamily: TEXT_BOLD,
+                                        marginBottom: 20
+                                    }}
+                                    text="Thông tin chuyển khoản"
+                                />
+
+                                <CustomText
+                                    style={{
+                                        fontSize: SIZES.FONT_H4
+                                    }}
+                                    text="Số tiền rút: "
+                                />
+                                <CustomText
+                                    style={{
+                                        textAlign: 'center',
+                                        marginBottom: 10,
+                                        fontSize: SIZES.FONT_H2,
+                                        color: COLORS.ACTIVE,
+                                        fontFamily: TEXT_BOLD
+                                    }}
+                                    text={CommonHelpers.formatCurrency(verificationSelected.amount)}
+                                />
+
+                                <CustomText
+                                    style={{
+                                        fontSize: SIZES.FONT_H4
+                                    }}
+                                    text="Chủ tài khoản: "
+                                />
+                                <CustomText
+                                    style={{
+                                        textAlign: 'center',
+                                        marginBottom: 10,
+                                        fontSize: SIZES.FONT_H2,
+                                        color: COLORS.ACTIVE,
+                                        fontFamily: TEXT_BOLD
+                                    }}
+                                    text={verificationSelected.ownerName}
+                                />
+
+                                <CustomText
+                                    style={{
+                                        fontSize: SIZES.FONT_H4
+                                    }}
+                                    text="Tên ngân hàng: "
+                                />
+                                <CustomText
+                                    style={{
+                                        textAlign: 'center',
+                                        marginBottom: 20,
+                                        fontSize: SIZES.FONT_H2,
+                                        color: COLORS.ACTIVE,
+                                        fontFamily: TEXT_BOLD
+                                    }}
+                                    text={verificationSelected.bankName}
+                                />
+
+                                <CustomButton
+                                    onPress={() => {
+                                        onClickUploadPaidScreenshot();
+                                    }}
+                                    buttonStyle={{ width: SIZES.WIDTH_BASE * 0.9, marginBottom: 10 }}
+                                    type="active"
+                                    label="Ảnh chụp màn hình chuyển khoản"
+                                />
+
+                                <View
+                                    style={{
+                                        alignSelf: 'center',
+                                        marginBottom: 20
+                                    }}
+                                >
+                                    {imageUrl ? (
+                                        <ImageScalable
+                                            style={{
+                                                zIndex: 99
+                                            }}
+                                            width={SIZES.WIDTH_BASE * 0.9}
+                                            source={{ uri: imageUrl }}
+                                        />
+                                    ) : (
+                                        <CustomText
+                                            style={{
+                                                textAlign: 'center',
+                                            }}
+                                            text="Chưa có ảnh"
+                                        />
+                                    )}
+
+                                </View>
+
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between',
+                                        width: SIZES.WIDTH_BASE * 0.9,
+                                        marginBottom: 10
+                                    }}
+                                >
+                                    <CustomButton
+                                        onPress={() => {
+                                            console.log('reject');
+                                        }}
+                                        buttonStyle={{ width: SIZES.WIDTH_BASE * 0.44 }}
+                                        type="default"
+                                        label="Từ chối"
+                                    />
+                                    <CustomButton
+                                        onPress={() => {
+                                            submitCompleteCashOut();
+                                        }}
+                                        buttonStyle={{ width: SIZES.WIDTH_BASE * 0.44 }}
+                                        type="active"
+                                        label="Xác nhận"
+                                    />
+                                </View>
+                            </View>
+                        )}
                     </ScrollView>
                 )}
             </>
