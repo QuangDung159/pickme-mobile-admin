@@ -39,14 +39,16 @@ export default function NotificationItem({
 
     const handleNavigation = (navigationId, navigationType) => {
         switch (navigationType) {
-            case 2: {
-                navigation.navigate(ScreenName.VERIFICATION_REQUEST, {
-                    bookingId: navigationId,
-                });
+            case 3: {
+                navigation.navigate(ScreenName.CASH_HISTORY);
                 break;
             }
-            case 3: {
+            case 4: {
                 navigation.navigate(ScreenName.CASH_OUT_REQUEST);
+                break;
+            }
+            case 5: {
+                navigation.navigate(ScreenName.VERIFICATION_REQUEST);
                 break;
             }
             default: {
@@ -64,7 +66,7 @@ export default function NotificationItem({
 
     const renderNotiContent = () => {
         const {
-            content, id, navigationId, type
+            content, id, navigationId, type, title
         } = notiItem;
 
         return (
@@ -97,10 +99,22 @@ export default function NotificationItem({
                             }}
                         >
                             <Text
+                                numberOfLines={1}
+                                style={{
+                                    color: COLORS.DEFAULT,
+                                    fontSize: SIZES.FONT_H4,
+                                    fontFamily: !isRead
+                                        ? TEXT_BOLD
+                                        : TEXT_REGULAR,
+                                }}
+                            >
+                                {title}
+                            </Text>
+                            <Text
                                 numberOfLines={2}
                                 style={{
                                     color: COLORS.DEFAULT,
-                                    fontSize: 16,
+                                    fontSize: SIZES.FONT_H4,
                                     fontFamily: !isRead
                                         ? TEXT_BOLD
                                         : TEXT_REGULAR,

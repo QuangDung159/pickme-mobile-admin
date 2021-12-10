@@ -1,18 +1,21 @@
 /* eslint-disable import/no-unresolved */
-import { CustomText, IconCustom, Line } from '@components/uiComponents';
+import {
+    CustomText, IconCustom, Line, TouchableText
+} from '@components/uiComponents';
 import App from '@constants/App';
 import IconFamily from '@constants/IconFamily';
 import ScreenName from '@constants/ScreenName';
 import ScreenTitle from '@constants/ScreenTitle';
 import Theme from '@constants/Theme';
 import { ENV } from '@env';
-import ToastHelpers from '@helpers/ToastHelpers';
-import { resetStoreSignOut } from '@redux/Actions';
+import { ToastHelpers } from '@helpers/index';
+import { resetStoreSignOut, setListNotification, setNumberNotificationUnread } from '@redux/Actions';
+import { NotificationServices } from '@services/index';
+import * as Clipboard from 'expo-clipboard';
 import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
-import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import React, { useEffect } from 'react';
+import { FlatList, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 const {
@@ -82,6 +85,33 @@ export default function Menu({ navigation }) {
             },
         },
     ];
+
+    useEffect(
+        () => {
+            fetchListNotification();
+        }, []
+    );
+
+    const fetchListNotification = async () => {
+        const result = await NotificationServices.fetchListNotificationAsync();
+        const { data } = result;
+
+        if (data) {
+            dispatch(setListNotification(data.data));
+            countNumberNotificationUnread(data.data);
+        }
+    };
+
+    const countNumberNotificationUnread = (listNotiFromAPI) => {
+        let count = 0;
+        listNotiFromAPI.forEach((item) => {
+            if (!item.isRead) {
+                count += 1;
+            }
+        });
+
+        dispatch(setNumberNotificationUnread(count));
+    };
 
     const onSignOut = () => {
         navigation.reset({
@@ -161,6 +191,19 @@ export default function Menu({ navigation }) {
                         marginBottom: 10
                     }}
                     text={currentUser.userName}
+                />
+                <TouchableText
+                    onPress={() => {
+                        console.log('object');
+                        Clipboard.setString(currentUser.expoNotificationToken);
+                        ToastHelpers.renderToast('Đã lưu vào khay nhớ tạm.', 'success');
+                    }}
+                    style={{
+                        fontSize: SIZES.FONT_H5,
+                        textAlign: 'center',
+                        marginBottom: 10
+                    }}
+                    text={currentUser.expoNotificationToken}
                 />
                 <CustomText
                     style={{
