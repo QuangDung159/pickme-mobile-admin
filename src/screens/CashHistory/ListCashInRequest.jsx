@@ -113,7 +113,7 @@ export default function ListCashInRequest({ navigation }) {
                             style={{
                                 fontFamily: TEXT_BOLD
                             }}
-                            text={`${item.phoneNum}`}
+                            text={`${item.username}`}
                         />
                         <CustomText
                             style={{
