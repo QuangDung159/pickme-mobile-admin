@@ -1,9 +1,13 @@
-import { CenterLoader, CustomText } from '@components/uiComponents';
+import {
+    CenterLoader, CustomText
+} from '@components/uiComponents';
 import { Theme } from '@constants/index';
 import { CommonHelpers, ToastHelpers } from '@helpers/index';
 import CashServices from '@services/CashServices';
 import React, { useEffect, useState } from 'react';
-import { FlatList, RefreshControl, View } from 'react-native';
+import {
+    RefreshControl, ScrollView, View
+} from 'react-native';
 
 const {
     SIZES,
@@ -16,36 +20,36 @@ const {
 export default function ListCashOutRequest({ navigation }) {
     const [isShowSpinner, setIsShowSpinner] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
-    const [listCashOutRequest, setListCashOutRequest] = useState([]);
+    const [listCashOutRequest, setListCashOutRequest] = useState();
 
     useEffect(
         () => {
-            getListCompletedCashOutRequest();
+            getListWaitingCashOutRequest();
+
             const onFocus = navigation.addListener('focus', () => {
                 setIsShowSpinner(true);
-                getListCompletedCashOutRequest();
+                getListWaitingCashOutRequest();
             });
 
             return onFocus;
         }, []
     );
 
-    const getListCompletedCashOutRequest = async () => {
+    const getListWaitingCashOutRequest = async () => {
         const res = await CashServices.fetchCashOutRequestAsync();
-        console.log('res :>> ', res);
         const { data } = res;
 
         if (data) {
-            let listComplete = [];
-            listComplete = data.data.filter((item) => item.isCompleted);
-            setListCashOutRequest(listComplete);
+            let listNotComplete = [];
+            listNotComplete = data.data.filter((item) => !item.isCompleted);
+            setListCashOutRequest(listNotComplete);
 
             setIsShowSpinner(false);
             setRefreshing(false);
         }
     };
 
-    const renderCashOutRequestItem = (item, index) => (
+    const renderCashOutRequestItem = (item) => (
         <View
             style={{
                 width: SIZES.WIDTH_BASE * 0.95,
@@ -54,7 +58,6 @@ export default function ListCashOutRequest({ navigation }) {
                 borderRadius: 20,
                 borderWidth: 1,
                 marginBottom: 10,
-                marginTop: index === 0 ? 10 : 0
             }}
         >
             <View
@@ -76,7 +79,7 @@ export default function ListCashOutRequest({ navigation }) {
                         }}
                     >
                         <CustomText
-                            text="Số tiền nạp:"
+                            text="Số tiền rút:"
                         />
                         <CustomText
                             text="Số tiền trước:"
@@ -85,10 +88,7 @@ export default function ListCashOutRequest({ navigation }) {
                             text="Số tiền sau:"
                         />
                         <CustomText
-                            text="Tên đăng nhập:"
-                        />
-                        <CustomText
-                            text="Thời gian:"
+                            text="Chủ tài khoản:"
                         />
                     </View>
                     <View
@@ -118,51 +118,43 @@ export default function ListCashOutRequest({ navigation }) {
                             style={{
                                 fontFamily: TEXT_BOLD
                             }}
-                            text={`${item.username}`}
-                        />
-                        <CustomText
-                            style={{
-                                fontFamily: TEXT_BOLD
-                            }}
-                            text={`${CommonHelpers.formatTime(item.createdDate)}`}
+                            text={`${item.ownerName}`}
                         />
                     </View>
                 </View>
-                <CustomText
-                    text={`Mô tả: ${item.description}`}
-                />
             </View>
         </View>
     );
 
     const onRefresh = () => {
-        getListCompletedCashOutRequest();
+        getListWaitingCashOutRequest();
     };
 
     const renderListCashOutRequest = () => (
-        <FlatList
-            contentContainerStyle={{
-                width: SIZES.WIDTH_BASE,
+        <View
+            style={{
+                marginTop: 10
             }}
-            data={listCashOutRequest}
-            renderItem={({ item, index }) => renderCashOutRequestItem(item, index)}
-            keyExtractor={(item) => item.id}
-            refreshControl={(
-                <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={() => onRefresh()}
-                    tintColor={COLORS.ACTIVE}
-                />
-            )}
-            ListEmptyComponent={(
+        >
+            {listCashOutRequest && listCashOutRequest.length > 0 ? (
+                <>
+                    {listCashOutRequest.map((item) => (
+                        <View
+                            key={item.id}
+                        >
+                            {renderCashOutRequestItem(item)}
+                        </View>
+                    ))}
+                </>
+            ) : (
                 <CustomText
                     style={{
-                        textAlign: 'center'
+                        textAlign: 'center',
                     }}
                     text="Không có dữ liệu"
                 />
             )}
-        />
+        </View>
     );
 
     try {
@@ -171,14 +163,24 @@ export default function ListCashOutRequest({ navigation }) {
                 {isShowSpinner ? (
                     <CenterLoader />
                 ) : (
-                    <View
-                        style={{
+                    <ScrollView
+                        contentContainerStyle={{
                             width: SIZES.WIDTH_BASE,
-                            backgroundColor: COLORS.BASE,
+                            minHeight: SIZES.HEIGHT_BASE
                         }}
+                        // data={listCashOutRequest}
+                        // renderItem={({ item, index }) => renderCashOutRequestItem(item, index)}
+                        // keyExtractor={(item) => item.id}
+                        refreshControl={(
+                            <RefreshControl
+                                refreshing={refreshing}
+                                onRefresh={() => onRefresh()}
+                                tintColor={COLORS.ACTIVE}
+                            />
+                        )}
                     >
                         {renderListCashOutRequest()}
-                    </View>
+                    </ScrollView>
                 )}
             </>
         );
