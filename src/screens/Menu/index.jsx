@@ -14,8 +14,7 @@ import * as Clipboard from 'expo-clipboard';
 import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 const {

@@ -1,8 +1,9 @@
 import IconCustom from '@components/uiComponents/IconCustom';
 import { IconFamily, Theme } from '@constants/index';
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import {
+    Text, TouchableOpacity, TouchableWithoutFeedback, View
+} from 'react-native';
 
 const {
     COLORS,
