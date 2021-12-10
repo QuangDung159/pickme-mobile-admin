@@ -23,7 +23,7 @@ const {
     SIZES,
 } = Theme;
 
-export default function SignIn({ navigation, setIsShowSpinner, isRegisterPartner }) {
+export default function SignIn({ navigation, setIsShowSpinner }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     // const [deviceIdToSend, setDeviceIdToSend] = useState('');
@@ -142,24 +142,7 @@ export default function SignIn({ navigation, setIsShowSpinner, isRegisterPartner
         SecureStore.setItemAsync('api_token', `${currentUserInfo.token}`);
         dispatch(setCurrentUser(currentUserInfo));
 
-        if (isRegisterPartner) {
-            Alert.alert('Bạn vừa chọn đăng ký trở thành Host', 'Bạn có muốn tiếp tục?', [
-                {
-                    text: 'Huỷ',
-                    style: 'cancel',
-                    onPress: () => handleNavigation(status)
-                },
-                {
-                    text: 'Tiếp tục',
-                    onPress: () => navigation.navigate(ScreenName.VERIFICATION, {
-                        navigateFrom: ScreenName.MENU
-                    })
-                },
-            ],
-            { cancelable: false });
-        } else {
-            handleNavigation(status);
-        }
+        handleNavigation(status);
     };
 
     const handleNavigation = (status) => {

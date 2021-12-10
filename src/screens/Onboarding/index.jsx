@@ -214,7 +214,6 @@ export default function Onboarding({ navigation }) {
                         <SignIn
                             navigation={navigation}
                             setIsShowSpinner={(isShow) => setIsShowSpinner(isShow)}
-                            // isRegisterPartner={isRegisterPartner}
                         />
                         <View
                             style={{
