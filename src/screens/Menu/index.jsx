@@ -9,11 +9,12 @@ import ScreenTitle from '@constants/ScreenTitle';
 import Theme from '@constants/Theme';
 import { ENV } from '@env';
 import { ToastHelpers } from '@helpers/index';
-import { resetStoreSignOut } from '@redux/Actions';
+import { resetStoreSignOut, setListNotification, setNumberNotificationUnread } from '@redux/Actions';
+import { NotificationServices } from '@services/index';
 import * as Clipboard from 'expo-clipboard';
 import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -84,6 +85,33 @@ export default function Menu({ navigation }) {
             },
         },
     ];
+
+    useEffect(
+        () => {
+            fetchListNotification();
+        }, []
+    );
+
+    const fetchListNotification = async () => {
+        const result = await NotificationServices.fetchListNotificationAsync();
+        const { data } = result;
+
+        if (data) {
+            dispatch(setListNotification(data.data));
+            countNumberNotificationUnread(data.data);
+        }
+    };
+
+    const countNumberNotificationUnread = (listNotiFromAPI) => {
+        let count = 0;
+        listNotiFromAPI.forEach((item) => {
+            if (!item.isRead) {
+                count += 1;
+            }
+        });
+
+        dispatch(setNumberNotificationUnread(count));
+    };
 
     const onSignOut = () => {
         navigation.reset({
