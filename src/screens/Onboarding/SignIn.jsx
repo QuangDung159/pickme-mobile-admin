@@ -72,8 +72,6 @@ export default function SignIn({ navigation, setIsShowSpinner, isRegisterPartner
             expoTokenFromServer = (await Notifications.getExpoPushTokenAsync()).data;
             dispatch(setExpoToken(expoTokenFromServer));
             updateExpoTokenToServer(expoTokenFromServer);
-
-            console.log('expoTokenFromServer :>>', expoTokenFromServer);
         }
 
         if (Platform.OS === 'android') {
@@ -87,13 +85,13 @@ export default function SignIn({ navigation, setIsShowSpinner, isRegisterPartner
     };
 
     const onSubmitLogin = async () => {
-        const deviceId = await SecureStore.getItemAsync('deviceId');
+        // const deviceId = await SecureStore.getItemAsync('deviceId');
         if (validate()) {
             const body = {
                 username: username.toString().trim(),
                 password,
                 // deviceId: deviceIdToSend || deviceId
-                deviceId
+                deviceId: 'deviceId'
             };
 
             setIsShowSpinner(true);
