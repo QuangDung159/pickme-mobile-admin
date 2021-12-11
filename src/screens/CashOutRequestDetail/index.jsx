@@ -256,7 +256,7 @@ export default function CashOutRequestDetail({ navigation, route }) {
                                 >
                                     <CustomButton
                                         onPress={() => {
-                                            Alert.alert('Từ chối yêu cầu rút tiền', 'Do quy định của PickMe, bạn phải thực hiện việc rút tiền cho người dùng, sau đó tạo lệnh nạp tiền và thông báo cho người dùng về vấn đề sai sót thông tin.', [
+                                            Alert.alert('Từ chối yêu cầu rút tiền', 'Do quy định của 2SeeYou, bạn phải thực hiện việc rút tiền cho người dùng, sau đó tạo lệnh nạp tiền và thông báo cho người dùng về vấn đề sai sót thông tin.', [
                                                 {
                                                     text: 'Đã hiểu',
                                                     style: 'cancel'
