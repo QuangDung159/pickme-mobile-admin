@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import {
     CenterLoader, CustomButton, CustomText, IconCustom, NoteText
 } from '@components/uiComponents';
@@ -5,7 +6,9 @@ import { IconFamily, ScreenName, Theme } from '@constants/index';
 import { CommonHelpers, MediaHelpers, ToastHelpers } from '@helpers/index';
 import CashServices from '@services/CashServices';
 import React, { useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import {
+    Alert, Linking, ScrollView, TouchableOpacity, View
+} from 'react-native';
 import ImageScalable from 'react-native-scalable-image';
 
 const {
@@ -160,6 +163,55 @@ export default function CashOutRequestDetail({ navigation, route }) {
                                     text={selectedCashOut.bankName}
                                 />
 
+                                <CustomText
+                                    style={{
+                                        fontSize: SIZES.FONT_H4
+                                    }}
+                                    text="Số điện thoại: "
+                                />
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        Alert.alert('Thực hiện cuộc gọi', '', [
+                                            {
+                                                text: `Gọi tới số ${selectedCashOut.phoneNum || 'N/a'}`,
+                                                style: 'cancel',
+                                                onPress: () => {
+                                                    Linking.openURL(`tel:${selectedCashOut.phoneNum || 'N/a'}`);
+                                                }
+                                            },
+                                        ], { cancelable: true });
+                                    }}
+                                >
+                                    <View
+                                        style={{
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            marginBottom: 20,
+                                        }}
+                                    >
+                                        <IconCustom
+                                            name="phone-forwarded"
+                                            family={IconFamily.FEATHER}
+                                            size={18}
+                                            color={COLORS.ACTIVE}
+                                            style={{
+                                                marginTop: 5
+                                            }}
+                                        />
+                                        <CustomText
+                                            style={{
+                                                textAlign: 'center',
+                                                fontSize: SIZES.FONT_H2,
+                                                color: COLORS.ACTIVE,
+                                                fontFamily: TEXT_BOLD,
+                                                marginLeft: 5
+                                            }}
+                                            text={selectedCashOut.phoneNum || 'N/a'}
+                                        />
+                                    </View>
+                                </TouchableOpacity>
+
                                 <CustomButton
                                     onPress={() => {
                                         onClickUploadPaidScreenshot();
@@ -204,7 +256,12 @@ export default function CashOutRequestDetail({ navigation, route }) {
                                 >
                                     <CustomButton
                                         onPress={() => {
-                                            console.log('reject');
+                                            Alert.alert('Từ chối yêu cầu rút tiền', 'Do quy định của 2SeeYou, bạn phải thực hiện việc rút tiền cho người dùng, sau đó tạo lệnh nạp tiền và thông báo cho người dùng về vấn đề sai sót thông tin.', [
+                                                {
+                                                    text: 'Đã hiểu',
+                                                    style: 'cancel'
+                                                },
+                                            ]);
                                         }}
                                         buttonStyle={{ width: SIZES.WIDTH_BASE * 0.44 }}
                                         type="default"

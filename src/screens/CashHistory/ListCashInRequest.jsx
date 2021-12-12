@@ -3,7 +3,7 @@ import { Theme } from '@constants/index';
 import { CommonHelpers, ToastHelpers } from '@helpers/index';
 import CashServices from '@services/CashServices';
 import React, { useEffect, useState } from 'react';
-import { FlatList, RefreshControl, View } from 'react-native';
+import { RefreshControl, ScrollView, View } from 'react-native';
 
 const {
     SIZES,
@@ -113,7 +113,7 @@ export default function ListCashInRequest({ navigation }) {
                             style={{
                                 fontFamily: TEXT_BOLD
                             }}
-                            text={`${item.phoneNum}`}
+                            text={`${item.username}`}
                         />
                         <CustomText
                             style={{
@@ -135,29 +135,30 @@ export default function ListCashInRequest({ navigation }) {
     };
 
     const renderListCashInRequest = () => (
-        <FlatList
-            contentContainerStyle={{
-                width: SIZES.WIDTH_BASE,
+        <View
+            style={{
+                marginTop: 10
             }}
-            data={listCashInRequest}
-            renderItem={({ item, index }) => renderCashInRequestItem(item, index)}
-            keyExtractor={(item) => item.id}
-            refreshControl={(
-                <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={() => onRefresh()}
-                    tintColor={COLORS.ACTIVE}
-                />
-            )}
-            ListEmptyComponent={(
+        >
+            {listCashInRequest && listCashInRequest.length > 0 ? (
+                <>
+                    {listCashInRequest.map((item) => (
+                        <View
+                            key={item.id}
+                        >
+                            {renderCashInRequestItem(item)}
+                        </View>
+                    ))}
+                </>
+            ) : (
                 <CustomText
                     style={{
-                        textAlign: 'center'
+                        textAlign: 'center',
                     }}
                     text="Không có dữ liệu"
                 />
             )}
-        />
+        </View>
     );
 
     try {
@@ -166,14 +167,24 @@ export default function ListCashInRequest({ navigation }) {
                 {isShowSpinner ? (
                     <CenterLoader />
                 ) : (
-                    <View
-                        style={{
+                    <ScrollView
+                        contentContainerStyle={{
                             width: SIZES.WIDTH_BASE,
-                            backgroundColor: COLORS.BASE,
+                            minHeight: SIZES.HEIGHT_BASE
                         }}
+                        // data={listCashOutRequest}
+                        // renderItem={({ item, index }) => renderCashOutRequestItem(item, index)}
+                        // keyExtractor={(item) => item.id}
+                        refreshControl={(
+                            <RefreshControl
+                                refreshing={refreshing}
+                                onRefresh={() => onRefresh()}
+                                tintColor={COLORS.ACTIVE}
+                            />
+                        )}
                     >
                         {renderListCashInRequest()}
-                    </View>
+                    </ScrollView>
                 )}
             </>
         );

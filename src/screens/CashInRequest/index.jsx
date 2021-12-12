@@ -205,10 +205,17 @@ export default function CashInRequest({ navigation }) {
                                     setAmountDisplay(CommonHelpers.formatCurrency(e.nativeEvent.text));
                                 }
                             }
+                            onFocus={() => setAmountDisplay(amount)}
                             containerStyle={{
                                 marginVertical: 10,
                             }}
                             keyboardType="number-pad"
+                            inputStyle={{
+                                fontFamily: TEXT_BOLD,
+                                color: COLORS.ACTIVE,
+                                textAlign: 'center',
+                                fontSize: SIZES.FONT_H1
+                            }}
                         />
                         <CustomInput
                             placeholder="Tên đăng nhập"

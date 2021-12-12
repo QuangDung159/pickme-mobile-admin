@@ -1,6 +1,6 @@
 /* eslint-disable import/no-unresolved */
 import {
-    CenterLoader, CustomButton, CustomModal, CustomText
+    CenterLoader, CustomText
 } from '@components/uiComponents';
 import App from '@constants/App';
 import {
@@ -15,7 +15,7 @@ import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
 import React, { useEffect, useState } from 'react';
 import {
-    Image, StyleSheet, Text, View
+    Image, Text, View
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,7 +32,6 @@ const {
 export default function Onboarding({ navigation }) {
     const [isShowSpinner, setIsShowSpinner] = useState(false);
     const [deviceIdDisplay, setDeviceIdDisplay] = useState('');
-    const [modalVisible, setModalVisible] = useState(false);
 
     const isSignInOtherDeviceStore = useSelector((state) => state.userReducer.isSignInOtherDeviceStore);
 
@@ -107,44 +106,6 @@ export default function Onboarding({ navigation }) {
         }
     };
 
-    const renderModalRegisterPartner = () => (
-        <CustomModal
-            modalVisible={modalVisible}
-            renderContent={() => (
-                <View>
-                    <CustomText
-                        style={{
-                            textAlign: 'center',
-                            marginBottom: 10,
-                            fontSize: SIZES.FONT_H4
-                        }}
-                        text="Vui lòng đăng nhập để tiếp tục"
-                    />
-
-                    <CustomText
-                        style={{
-                            textAlign: 'center',
-                            marginBottom: 10,
-                            fontSize: SIZES.FONT_H4
-                        }}
-                        text={'Nếu bạn chưa có tài khoản,\nvui lòng đăng ký tài khoản PickMe'}
-                    />
-
-                    <View>
-                        <CustomButton
-                            onPress={() => setModalVisible(!modalVisible)}
-                            buttonStyle={[styles.button, {
-                                width: SIZES.WIDTH_BASE * 0.8
-                            }]}
-                            type="active"
-                            label="Đã hiểu"
-                        />
-                    </View>
-                </View>
-            )}
-        />
-    );
-
     return (
         <>
             {isShowSpinner ? (
@@ -182,7 +143,6 @@ export default function Onboarding({ navigation }) {
                                 text={!deviceIdDisplay || ''}
                             />
                         </View>
-                        {renderModalRegisterPartner()}
                         <View
                             style={{
                                 marginTop: 130
@@ -205,16 +165,15 @@ export default function Onboarding({ navigation }) {
                                 <CustomText
                                     style={{
                                         color: COLORS.ACTIVE,
-                                        marginTop: 10
+                                        fontSize: SIZES.FONT_H2
                                     }}
-                                    text="Ở đây chúng tôi phát người yêu!"
+                                    text="Trò chuyện với người lạ"
                                 />
                             </View>
                         </View>
                         <SignIn
                             navigation={navigation}
                             setIsShowSpinner={(isShow) => setIsShowSpinner(isShow)}
-                            // isRegisterPartner={isRegisterPartner}
                         />
                         <View
                             style={{
@@ -247,27 +206,3 @@ export default function Onboarding({ navigation }) {
         </>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: COLORS.BASE,
-        flex: 1,
-    },
-    padded: {
-        zIndex: 3,
-        position: 'absolute',
-        bottom: SIZES.HEIGHT_BASE * 0.17,
-        alignSelf: 'center',
-        width: SIZES.WIDTH_BASE,
-        backgroundColor: COLORS.BASE
-    },
-    button: {
-        marginTop: 10
-    },
-    text: {
-        fontFamily: TEXT_REGULAR,
-        fontSize: SIZES.FONT_H4,
-        color: COLORS.ACTIVE,
-        marginTop: 10
-    }
-});

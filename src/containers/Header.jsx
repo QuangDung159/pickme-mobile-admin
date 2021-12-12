@@ -12,7 +12,6 @@ import React from 'react';
 import {
     Platform, StyleSheet, TouchableOpacity, View
 } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 
 const iPhoneX = Platform.OS === 'ios';
@@ -183,7 +182,7 @@ export default function Header({
 
     return (
         <View style={headerStyles}>
-            <TouchableWithoutFeedback
+            <TouchableOpacity
                 onLongPress={() => clearAllCache()}
             >
                 <NavBar
@@ -204,7 +203,7 @@ export default function Header({
                     ]}
                     {...props}
                 />
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
             {renderHeader()}
             {renderRight()}
         </View>
