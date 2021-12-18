@@ -6,7 +6,7 @@ import App from '@constants/App';
 import {
     Images, ScreenName, Theme
 } from '@constants/index';
-import { ENV } from '@env';
+import { ENV } from '@constants/Config';
 import {
     setCurrentUser, setIsSignInOtherDeviceStore, setNavigation
 } from '@redux/Actions';
@@ -167,7 +167,7 @@ export default function Onboarding({ navigation }) {
                                         color: COLORS.ACTIVE,
                                         fontSize: SIZES.FONT_H2
                                     }}
-                                    text="Trò chuyện với người lạ"
+                                    text="Admin"
                                 />
                             </View>
                         </View>

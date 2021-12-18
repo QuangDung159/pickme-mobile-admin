@@ -7,7 +7,7 @@ import IconFamily from '@constants/IconFamily';
 import ScreenName from '@constants/ScreenName';
 import ScreenTitle from '@constants/ScreenTitle';
 import Theme from '@constants/Theme';
-import { ENV } from '@env';
+import { ENV } from '@constants/Config';
 import { ToastHelpers } from '@helpers/index';
 import { resetStoreSignOut, setListNotification, setNumberNotificationUnread } from '@redux/Actions';
 import { NotificationServices } from '@services/index';
