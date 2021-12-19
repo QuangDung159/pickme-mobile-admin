@@ -21,19 +21,20 @@ export default function VerificationRequestDetail({ navigation, route }) {
     const [verifyNote, setVerifyNote] = useState('Đầy đủ hình ảnh xác thực');
 
     const verification = route?.params?.verification || '';
-    const isForPartner = route?.params?.isForPartner || false;
+    const isForPartner = route?.params?.verification?.isApplyForPartner;
 
     const submitVerificationRequest = async (isApprove) => {
-        setIsShowSpinner(true);
         const params = {
             customerId: verification.id,
             body: {
-                IsPartnerVerified: true,
-                IsCustomerVerified: isForPartner ? true : verification.isCustomerVerified,
+                IsPartnerVerified: isForPartner,
+                IsCustomerVerified: true,
                 IsApproved: isApprove,
                 verifyNote
             }
         };
+
+        setIsShowSpinner(true);
         const res = await UserServices.submitVerificationRequestAsync(params);
 
         const { data } = res;
@@ -91,7 +92,7 @@ export default function VerificationRequestDetail({ navigation, route }) {
                                     style={{
                                         fontSize: SIZES.FONT_H2,
                                         fontFamily: TEXT_BOLD,
-                                        marginBottom: 20
+                                        marginBottom: 10
                                     }}
                                     text="Thông tin xác thực"
                                 />
@@ -105,10 +106,9 @@ export default function VerificationRequestDetail({ navigation, route }) {
                                 <CustomText
                                     style={{
                                         textAlign: 'center',
-                                        marginBottom: 10,
-                                        fontSize: SIZES.FONT_H2,
+                                        fontSize: SIZES.FONT_H1,
                                         color: COLORS.ACTIVE,
-                                        fontFamily: TEXT_BOLD
+                                        fontFamily: TEXT_BOLD,
                                     }}
                                     text={verification.userName}
                                 />
@@ -125,7 +125,6 @@ export default function VerificationRequestDetail({ navigation, route }) {
                                         route={route}
                                         verificationDocuments={verification?.verificationDocuments || []}
                                     />
-
                                 </View>
 
                                 <CustomInput

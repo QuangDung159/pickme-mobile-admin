@@ -7,7 +7,7 @@ import IconFamily from '@constants/IconFamily';
 import ScreenName from '@constants/ScreenName';
 import ScreenTitle from '@constants/ScreenTitle';
 import Theme from '@constants/Theme';
-import { ENV } from '@constants/Config';
+import { getConfigByEnv } from '@helpers/CommonHelpers';
 import { ToastHelpers } from '@helpers/index';
 import { resetStoreSignOut, setListNotification, setNumberNotificationUnread } from '@redux/Actions';
 import { NotificationServices } from '@services/index';
@@ -17,6 +17,8 @@ import * as SecureStore from 'expo-secure-store';
 import React, { useEffect } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+
+const { ENV } = getConfigByEnv();
 
 const {
     SIZES, FONT: {

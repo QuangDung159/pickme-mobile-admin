@@ -1,10 +1,11 @@
 /* eslint-disable max-len */
 import {
-    CenterLoader, CustomButton, CustomText, IconCustom, NoteText
+    CenterLoader, CustomButton, CustomText, IconCustom, NoteText, TouchableText
 } from '@components/uiComponents';
 import { IconFamily, ScreenName, Theme } from '@constants/index';
 import { CommonHelpers, MediaHelpers, ToastHelpers } from '@helpers/index';
 import CashServices from '@services/CashServices';
+import * as Clipboard from 'expo-clipboard';
 import React, { useState } from 'react';
 import {
     Alert, Linking, ScrollView, TouchableOpacity, View
@@ -21,12 +22,11 @@ const {
 
 export default function CashOutRequestDetail({ navigation, route }) {
     const [isShowSpinner, setIsShowSpinner] = useState(false);
-    const [imageUrl, setImageUrl] = useState();
+    const [uri, setUri] = useState();
 
     const selectedCashOut = route?.params?.cashOutRequest || '';
 
-    const submitCompleteCashOut = async () => {
-        setIsShowSpinner(true);
+    const submitCompleteCashOut = async (imageUrl) => {
         const res = await CashServices.submitCompleteCashOutRequestAsync({
             PaidImageUrl: imageUrl || 'no-image',
             Description: 'Hoàn thành',
@@ -43,17 +43,18 @@ export default function CashOutRequestDetail({ navigation, route }) {
     };
 
     const onClickUploadPaidScreenshot = () => {
-        MediaHelpers.pickImage(false, [1, 1], (result) => handleUploadPainScreenshot(result.uri), 0.2);
+        MediaHelpers.pickImage(false, [1, 1], (result) => {
+            setUri(result.uri);
+        }, 0.2);
     };
 
-    const handleUploadPainScreenshot = (uri) => {
+    const handleUploadMoneyTransferScreenshot = () => {
         setIsShowSpinner(true);
 
         MediaHelpers.imgbbUploadImage(
             uri,
-            (res) => {
-                setImageUrl(res?.data?.url || '');
-                setIsShowSpinner(false);
+            async (res) => {
+                submitCompleteCashOut(res?.data?.url);
             },
             () => {
                 ToastHelpers.renderToast();
@@ -107,43 +108,9 @@ export default function CashOutRequestDetail({ navigation, route }) {
                                     style={{
                                         fontSize: SIZES.FONT_H2,
                                         fontFamily: TEXT_BOLD,
-                                        marginBottom: 20
+                                        marginBottom: 10
                                     }}
                                     text="Thông tin chuyển khoản"
-                                />
-
-                                <CustomText
-                                    style={{
-                                        fontSize: SIZES.FONT_H4
-                                    }}
-                                    text="Số tiền rút: "
-                                />
-                                <CustomText
-                                    style={{
-                                        textAlign: 'center',
-                                        marginBottom: 10,
-                                        fontSize: SIZES.FONT_H2,
-                                        color: COLORS.ACTIVE,
-                                        fontFamily: TEXT_BOLD
-                                    }}
-                                    text={CommonHelpers.formatCurrency(selectedCashOut.amount)}
-                                />
-
-                                <CustomText
-                                    style={{
-                                        fontSize: SIZES.FONT_H4
-                                    }}
-                                    text="Chủ tài khoản: "
-                                />
-                                <CustomText
-                                    style={{
-                                        textAlign: 'center',
-                                        marginBottom: 10,
-                                        fontSize: SIZES.FONT_H2,
-                                        color: COLORS.ACTIVE,
-                                        fontFamily: TEXT_BOLD
-                                    }}
-                                    text={selectedCashOut.ownerName}
                                 />
 
                                 <CustomText
@@ -155,12 +122,75 @@ export default function CashOutRequestDetail({ navigation, route }) {
                                 <CustomText
                                     style={{
                                         textAlign: 'center',
-                                        marginBottom: 20,
+                                        marginBottom: 10,
                                         fontSize: SIZES.FONT_H2,
                                         color: COLORS.ACTIVE,
                                         fontFamily: TEXT_BOLD
                                     }}
                                     text={selectedCashOut.bankName}
+                                />
+
+                                <CustomText
+                                    style={{
+                                        fontSize: SIZES.FONT_H4
+                                    }}
+                                    text="Số tài khoản: "
+                                />
+                                <TouchableText
+                                    style={{
+                                        textAlign: 'center',
+                                        marginBottom: 10,
+                                        fontSize: SIZES.FONT_H2,
+                                        color: COLORS.ACTIVE,
+                                        fontFamily: TEXT_BOLD
+                                    }}
+                                    onPress={() => {
+                                        Clipboard.setString(selectedCashOut.bankNum);
+                                        ToastHelpers.renderToast(`Đã lưu: ${selectedCashOut.bankNum}`, 'success');
+                                    }}
+                                    text={selectedCashOut.bankNum}
+                                />
+
+                                <CustomText
+                                    style={{
+                                        fontSize: SIZES.FONT_H4
+                                    }}
+                                    text="Chủ tài khoản: "
+                                />
+                                <TouchableText
+                                    style={{
+                                        textAlign: 'center',
+                                        marginBottom: 10,
+                                        fontSize: SIZES.FONT_H2,
+                                        color: COLORS.ACTIVE,
+                                        fontFamily: TEXT_BOLD
+                                    }}
+                                    onPress={() => {
+                                        Clipboard.setString(selectedCashOut.ownerName);
+                                        ToastHelpers.renderToast(`Đã lưu: ${selectedCashOut.ownerName}`, 'success');
+                                    }}
+                                    text={selectedCashOut.ownerName}
+                                />
+
+                                <CustomText
+                                    style={{
+                                        fontSize: SIZES.FONT_H4
+                                    }}
+                                    text="Số tiền rút: "
+                                />
+                                <TouchableText
+                                    style={{
+                                        textAlign: 'center',
+                                        marginBottom: 10,
+                                        fontSize: SIZES.FONT_H2,
+                                        color: COLORS.ACTIVE,
+                                        fontFamily: TEXT_BOLD
+                                    }}
+                                    onPress={() => {
+                                        Clipboard.setString(selectedCashOut.amount);
+                                        ToastHelpers.renderToast(`Đã lưu: ${selectedCashOut.amount}`, 'success');
+                                    }}
+                                    text={CommonHelpers.formatCurrency(selectedCashOut.amount)}
                                 />
 
                                 <CustomText
@@ -227,13 +257,13 @@ export default function CashOutRequestDetail({ navigation, route }) {
                                         marginBottom: 20
                                     }}
                                 >
-                                    {imageUrl ? (
+                                    {uri ? (
                                         <ImageScalable
                                             style={{
                                                 zIndex: 99
                                             }}
                                             width={SIZES.WIDTH_BASE * 0.9}
-                                            source={{ uri: imageUrl }}
+                                            source={{ uri }}
                                         />
                                     ) : (
                                         <CustomText
@@ -269,7 +299,7 @@ export default function CashOutRequestDetail({ navigation, route }) {
                                     />
                                     <CustomButton
                                         onPress={() => {
-                                            submitCompleteCashOut();
+                                            handleUploadMoneyTransferScreenshot();
                                         }}
                                         buttonStyle={{ width: SIZES.WIDTH_BASE * 0.44 }}
                                         type="active"
