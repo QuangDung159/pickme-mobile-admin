@@ -1,6 +1,6 @@
 /* eslint-disable import/no-unresolved */
 import {
-    CustomText, IconCustom, Line, TouchableText
+    CustomText, IconCustom, Line
 } from '@components/uiComponents';
 import App from '@constants/App';
 import IconFamily from '@constants/IconFamily';
@@ -11,7 +11,6 @@ import { getConfigByEnv } from '@helpers/CommonHelpers';
 import { ToastHelpers } from '@helpers/index';
 import { resetStoreSignOut, setListNotification, setNumberNotificationUnread } from '@redux/Actions';
 import { NotificationServices } from '@services/index';
-import * as Clipboard from 'expo-clipboard';
 import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
 import React, { useEffect } from 'react';
@@ -194,7 +193,7 @@ export default function Menu({ navigation }) {
                     }}
                     text={currentUser.userName}
                 />
-                <TouchableText
+                {/* <TouchableText
                     onPress={() => {
                         console.log('object');
                         Clipboard.setString(currentUser.expoNotificationToken);
@@ -206,7 +205,7 @@ export default function Menu({ navigation }) {
                         marginBottom: 10
                     }}
                     text={currentUser.expoNotificationToken}
-                />
+                /> */}
                 <CustomText
                     style={{
                         fontSize: SIZES.FONT_H5,
