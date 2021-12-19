@@ -1,7 +1,9 @@
-import { IMAGE_STORAGE_URL, IMGBB_API_KEY } from '@constants/Config';
+import { getConfigByEnv } from '@helpers/CommonHelpers';
 import { RxUtil } from '@utils/index';
 import * as ImagePicker from 'expo-image-picker';
 import FormData from 'form-data';
+
+const { IMAGE_STORAGE_URL, IMGBB_API_KEY } = getConfigByEnv();
 
 const imgbbUploadImage = async (uri, onSuccess, onFail) => {
     const filename = `${uri.split('/').pop()}`;
