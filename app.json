@@ -27,6 +27,7 @@
       "package": "com.dragonc92team.pickmeadmin",
       "googleServicesFile": "./google-services.json",
       "useNextNotificationsApi": true,
+      "softwareKeyboardLayoutMode": "pan",
       "versionCode": 1
     },
     "web": {

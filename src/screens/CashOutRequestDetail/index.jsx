@@ -248,7 +248,7 @@ export default function CashOutRequestDetail({ navigation, route }) {
                                     }}
                                     buttonStyle={{ width: SIZES.WIDTH_BASE * 0.9, marginBottom: 10 }}
                                     type="active"
-                                    label="Ảnh chụp màn hình chuyển khoản"
+                                    label="Ảnh màn hình chuyển khoản"
                                 />
 
                                 <View

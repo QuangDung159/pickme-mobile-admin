@@ -214,7 +214,6 @@ export default function CashInRequest({ navigation }) {
                                 fontFamily: TEXT_BOLD,
                                 color: COLORS.ACTIVE,
                                 textAlign: 'center',
-                                fontSize: SIZES.FONT_H1
                             }}
                         />
                         <CustomInput
