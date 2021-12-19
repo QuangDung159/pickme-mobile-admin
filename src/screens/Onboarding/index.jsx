@@ -76,7 +76,7 @@ export default function Onboarding({ navigation }) {
                 };
 
                 setIsShowSpinner(true);
-                const result = await UserServices.loginAsync(body);
+                const result = await UserServices.submitLoginAsync(body);
                 const {
                     data, status
                 } = result;
@@ -118,8 +118,8 @@ export default function Onboarding({ navigation }) {
                     contentContainerStyle={{
                         backgroundColor: COLORS.BASE,
                         alignItems: 'center',
-                        width: SIZES.WIDTH_BASE,
-                        height: SIZES.HEIGHT_BASE
+                        width: '100%',
+                        height: '100%'
                     }}
                 >
                     <>
@@ -190,7 +190,7 @@ export default function Onboarding({ navigation }) {
                                     textAlign: 'center',
                                     marginBottom: 5
                                 }}
-                                text={`${Constants.manifest.version} - ${ENV} (${App.APP_VERSION_OTA})`}
+                                text={`${ENV} - ${Constants.manifest.version} (${App.APP_VERSION_OTA})`}
                             />
                             <Text
                                 style={{

@@ -82,7 +82,7 @@ export default function Header({
         <View
             style={{
                 position: 'absolute',
-                bottom: 14,
+                bottom: 6,
                 right: 10,
                 zIndex: 99,
             }}
@@ -91,9 +91,9 @@ export default function Header({
                 onPress={() => triggerReadAllNotification()}
             >
                 <IconCustom
-                    name="mark-email-read"
-                    family={IconFamily.MATERIAL_ICONS}
-                    size={26}
+                    name="notification-clear-all"
+                    family={IconFamily.MATERIAL_COMMUNITY_ICONS}
+                    size={30}
                     color={COLORS.ACTIVE}
                 />
             </TouchableOpacity>
@@ -192,7 +192,7 @@ export default function Header({
                     transparent={transparent}
                     rightStyle={{ alignItems: 'center' }}
                     leftStyle={{
-                        flex: 0.2,
+                        flex: 0.3,
                     }}
                     titleStyle={[
                         styles.title,
@@ -220,19 +220,19 @@ const styles = StyleSheet.create({
         position: 'relative'
     },
     title: {
-        width: 300,
+        width: '100%',
         fontSize: SIZES.FONT_H2,
         fontFamily: TEXT_BOLD,
-        marginLeft: -30,
+        marginLeft: -70,
         color: COLORS.DEFAULT,
-        marginTop: iPhoneX ? 5 : 25
+        marginTop: iPhoneX ? 5 : 26
     },
     navbar: {
         paddingTop: iPhoneX ? SIZES.HEIGHT_BASE * 0.05 : null,
         zIndex: 5
     },
     navbarHeight: {
-        height: 80,
+        height: 70,
     },
     shadow: {
         backgroundColor: COLORS.BASE,
