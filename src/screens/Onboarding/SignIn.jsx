@@ -95,7 +95,7 @@ export default function SignIn({ navigation, setIsShowSpinner }) {
             };
 
             setIsShowSpinner(true);
-            const result = await UserServices.loginAsync(body);
+            const result = await UserServices.submitLoginAsync(body);
 
             const {
                 data, status

@@ -27,6 +27,37 @@ const loginAsync = async (body) => {
     return CommonHelpers.handleResByStatus(result);
 };
 
+const rxSubmitLoginAsync = async (body, domain = null) => {
+    const result = await RxUtil(
+        Rx.AUTHENTICATION.LOGIN,
+        'POST',
+        body, domain
+    );
+    return result;
+};
+
+const submitLoginAsync = async (body) => {
+    let result = await rxSubmitLoginAsync(body);
+
+    const handledResult = await Middlewares.handleResponseStatusMiddleware(result);
+    if (handledResult) {
+        result = await rxSubmitLoginAsync(body, handledResult.backupDomain);
+
+        const { data } = result;
+
+        if (data.data) {
+            await SecureStore.setItemAsync('api_token', result.data.data.token);
+            await SecureStore.setItemAsync('username', body.username);
+            await SecureStore.setItemAsync('password', body.password);
+        } else {
+            await SecureStore.deleteItemAsync('api_token');
+            await SecureStore.deleteItemAsync('username');
+            await SecureStore.deleteItemAsync('password');
+        }
+    }
+    return CommonHelpers.handleResByStatus(result);
+};
+
 const rxFetchCurrentUserInfoAsync = async (domain = null) => {
     const result = await RxUtil(
         Rx.USER.CURRENT_USER_INFO,
@@ -419,5 +450,6 @@ export default {
     submitUpdatePartnerInfoAsync,
     fetchOtpForgotPasswordAsync,
     fetchListVerificationRequestAsync,
-    submitVerificationRequestAsync
+    submitVerificationRequestAsync,
+    submitLoginAsync
 };
