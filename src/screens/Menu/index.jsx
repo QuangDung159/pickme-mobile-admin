@@ -196,7 +196,6 @@ export default function Menu({ navigation }) {
                 />
                 <TouchableText
                     onPress={() => {
-                        console.log('object');
                         Clipboard.setString(currentUser.expoNotificationToken);
                         ToastHelpers.renderToast('Đã lưu vào khay nhớ tạm.', 'success');
                     }}
