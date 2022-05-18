@@ -176,6 +176,7 @@ export default function Menu({ navigation }) {
     };
 
     try {
+        console.log('expoNotificationToken :>> ', currentUser.expoNotificationToken);
         return (
             <>
                 <FlatList
