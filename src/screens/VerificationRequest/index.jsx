@@ -8,8 +8,8 @@ import ListVerificationForApplyPartner from './ListVerificationForApplyPartner';
 
 export default function VerificationRequest({ navigation, route }) {
     const [routes] = useState([
-        { key: 'listVerificationForApplyCustomer', title: 'Cho Customer' },
-        { key: 'listVerificationForApplyPartner', title: 'Cho Host' },
+        { key: 'listVerificationForApplyCustomer', title: 'Customer' },
+        { key: 'listVerificationForApplyPartner', title: 'Host' },
     ]);
     const [listVerificationForPartner, setListVerificationForPartner] = useState();
     const [listVerificationForCustomer, setListVerificationForCustomer] = useState();
