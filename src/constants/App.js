@@ -9,5 +9,5 @@ export default {
         robotoRegular: 'roboto-regular',
         robotoBold: 'roboto-bold',
     },
-    ENV: 'prd' // prd, stg, dev
+    ENV: 'dev' // prd, stg, dev
 };
